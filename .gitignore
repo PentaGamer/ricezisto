@@ -1,0 +1,4 @@
+# Local backup snapshots & temporary files
+.rice_backup/
+*.log
+*.tmp
