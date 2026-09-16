@@ -42,7 +42,9 @@ apt-get install -y \
     zoxide \
     eza \
     rofi \
-    cava
+    cava \
+    neovim \
+    wl-clipboard
 
 # Garantir symlink para invocação do bat
 if [ -f "/usr/bin/batcat" ] && [ ! -f "/usr/local/bin/bat" ]; then
