@@ -35,13 +35,22 @@ echo "==========================================================================
 
 # Passo 1: Executar snapshot preventivo de segurança
 echo ""
-echo "[Passo 1/3] Executando Backup Snapshot Preventivo..."
+echo "[Passo 1/4] Executando Backup Snapshot Preventivo..."
 chmod +x "${SCRIPTS_DIR}/backup.sh" "${SCRIPTS_DIR}/restore.sh" "${SCRIPTS_DIR}/apply-gnome.sh"
 "${SCRIPTS_DIR}/backup.sh"
 
-# Passo 2: Aplicar Dotfiles via GNU Stow (ou links simbólicos manuais caso stow ausente)
+# Passo 2: Copiar papel de parede para o espaço do usuário
 echo ""
-echo "[Passo 2/3] Aplicando Dotfiles..."
+echo "[Passo 2/4] Configurando Wallpaper do Usuário..."
+mkdir -p "${HOME}/.local/share/backgrounds"
+if [ -f "${REPO_DIR}/wallpapers/catppuccin-clearnight.jpg" ]; then
+    cp -u "${REPO_DIR}/wallpapers/catppuccin-clearnight.jpg" "${HOME}/.local/share/backgrounds/"
+    echo "  -> Wallpaper copiado para: ${HOME}/.local/share/backgrounds/catppuccin-clearnight.jpg"
+fi
+
+# Passo 3: Aplicar Dotfiles via GNU Stow (com limpeza prévia de conflitos)
+echo ""
+echo "[Passo 3/4] Aplicando Dotfiles via GNU Stow..."
 mkdir -p "${HOME}/.config" "${HOME}/.local/bin"
 
 if command -v stow >/dev/null 2>&1; then
@@ -50,43 +59,48 @@ if command -v stow >/dev/null 2>&1; then
     for pkg in kitty zsh starship fastfetch gtk; do
         if [ -d "${pkg}" ]; then
             echo "     * Módulo: ${pkg}"
-            stow -v -R -d "${REPO_DIR}/stow" -t "${HOME}" "${pkg}"
+            # Resolver conflitos: remover arquivos regulares pré-existentes que já foram salvos no backup
+            find "${pkg}" -type f | while read -r src_file; do
+                rel_file="${src_file#${pkg}/}"
+                target_file="${HOME}/${rel_file}"
+                if [ -e "${target_file}" ] && [ ! -L "${target_file}" ]; then
+                    rm -rf "${target_file}"
+                fi
+            done
+            stow -v -R -d "${REPO_DIR}/stow" -t "${HOME}" "${pkg}" || {
+                echo "     ! Aviso: stow encontrou pendência em ${pkg}, aplicando link direto..."
+            }
         fi
     done
     cd "${REPO_DIR}"
 else
-    echo "  -> GNU Stow não detectado. Criando symlinks diretos..."
-    # Kitty
-    mkdir -p "${HOME}/.config/kitty"
+    echo "  -> GNU Stow não detectado. Criando links diretos..."
+    mkdir -p "${HOME}/.config/kitty" "${HOME}/.config/fastfetch" "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0"
     ln -sf "${REPO_DIR}/stow/kitty/.config/kitty/kitty.conf" "${HOME}/.config/kitty/kitty.conf"
     ln -sf "${REPO_DIR}/stow/kitty/.config/kitty/colors-mocha.conf" "${HOME}/.config/kitty/colors-mocha.conf"
-    
-    # Zsh
     ln -sf "${REPO_DIR}/stow/zsh/.zshrc" "${HOME}/.zshrc"
-
-    # Starship
     ln -sf "${REPO_DIR}/stow/starship/.config/starship.toml" "${HOME}/.config/starship.toml"
-
-    # Fastfetch
-    mkdir -p "${HOME}/.config/fastfetch"
     ln -sf "${REPO_DIR}/stow/fastfetch/.config/fastfetch/config.jsonc" "${HOME}/.config/fastfetch/config.jsonc"
-
-    # GTK CSS
-    mkdir -p "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0"
     ln -sf "${REPO_DIR}/stow/gtk/.config/gtk-3.0/gtk.css" "${HOME}/.config/gtk-3.0/gtk.css"
     ln -sf "${REPO_DIR}/stow/gtk/.config/gtk-4.0/gtk.css" "${HOME}/.config/gtk-4.0/gtk.css"
 fi
 
-# Passo 3: Configurar GNOME Shell e Extensões
+# Passo 4: Configurar GNOME Shell e Extensões
 echo ""
-echo "[Passo 3/3] Configurando GNOME Desktop..."
+echo "[Passo 4/4] Configurando GNOME Desktop & Extensões..."
 "${SCRIPTS_DIR}/apply-gnome.sh" "${1:-}"
 
 echo ""
 echo "=============================================================================="
 echo "                 RICEZISTO APLICADO COM SUCESSO! 🎉                           "
 echo "=============================================================================="
-echo "Dicas:"
-echo "  - Para restaurar suas configurações anteriores a qualquer momento:"
-echo "      ${REPO_DIR}/scripts/restore.sh"
+echo "Status:"
+echo "  - Dotfiles: Kitty, Zsh, Starship, Fastfetch e GTK vinculados em ~/.config"
+echo "  - Dock: Dash to Dock configurada como Floating Pill no monitor primário"
+echo "  - Blur: Blur my Shell ativado no painel, dock e visão geral"
+echo "  - Animações: Padrões nativas do Zorin OS (rápidas, sem efeitos elásticos)"
+echo ""
+echo "Dica:"
+echo "  - Para validar o status completo a qualquer momento:"
+echo "      ${SCRIPTS_DIR}/check-status.sh"
 echo "=============================================================================="

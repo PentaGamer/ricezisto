@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Ricezisto - Status & Diagnostics Check
+# ==============================================================================
+set -euo pipefail
+
+echo "=============================================================================="
+echo "                   RICEZISTO - DIAGNÓSTICO DO AMBIENTE                        "
+echo "=============================================================================="
+echo "Usuário Atual:      ${USER} (UID: $(id -u))"
+echo "Sessão Gráfica:     ${XDG_SESSION_TYPE:-desconhecida}"
+echo "Desktop:            ${XDG_CURRENT_DESKTOP:-desconhecido}"
+echo "=============================================================================="
+
+pass() { echo -e "  [\033[0;32mOK\033[0m] $1"; }
+warn() { echo -e "  [\033[0;33mAVISO\033[0m] $1"; }
+fail() { echo -e "  [\033[0;31mFALHA\033[0m] $1"; }
+
+echo ""
+echo "1. Verificação de Dotfiles (~/.config):"
+check_link() {
+    local target="$1"
+    local desc="$2"
+    if [ -L "${target}" ]; then
+        pass "${desc}: Link simbólico ativo -> $(readlink -f "${target}")"
+    elif [ -f "${target}" ]; then
+        warn "${desc}: Arquivo regular presente (não é link simbólico)"
+    else
+        fail "${desc}: Arquivo inexistente (${target})"
+    fi
+}
+
+check_link "${HOME}/.config/kitty/kitty.conf" "Kitty Config"
+check_link "${HOME}/.zshrc" "Zsh RC"
+check_link "${HOME}/.config/starship.toml" "Starship Config"
+check_link "${HOME}/.config/fastfetch/config.jsonc" "Fastfetch Config"
+check_link "${HOME}/.config/gtk-4.0/gtk.css" "GTK4 / Libadwaita CSS"
+
+echo ""
+echo "2. Verificação de Extensões GNOME:"
+if command -v gnome-extensions >/dev/null 2>&1; then
+    ENABLED_EXTS=$(gnome-extensions list --enabled 2>/dev/null || true)
+    
+    if echo "${ENABLED_EXTS}" | grep -q "dash-to-dock"; then
+        pass "Dash to Dock: Habilitada"
+    else
+        warn "Dash to Dock: Desabilitada"
+    fi
+
+    if echo "${ENABLED_EXTS}" | grep -q "blur-my-shell"; then
+        pass "Blur my Shell: Habilitada"
+    else
+        warn "Blur my Shell: Não ativa na sessão atual (necessário logout/login para Wayland)"
+    fi
+
+    if echo "${ENABLED_EXTS}" | grep -q "zorin-taskbar"; then
+        warn "Zorin Taskbar: Habilitada (pode conflitar com a Floating Dock)"
+    else
+        pass "Zorin Taskbar: Desabilitada (liberando a Floating Dock)"
+    fi
+
+    if echo "${ENABLED_EXTS}" | grep -q "user-theme"; then
+        pass "User Themes: Habilitada"
+    else
+        warn "User Themes: Desabilitada"
+    fi
+else
+    fail "gnome-extensions: comando não disponível"
+fi
+
+echo ""
+echo "3. Configurações da Dock (dconf / gsettings):"
+if command -v dconf >/dev/null 2>&1; then
+    MONITOR=$(dconf read /org/gnome/shell/extensions/dash-to-dock/preferred-monitor-by-connector 2>/dev/null || echo "não configurado")
+    AUTOHIDE=$(dconf read /org/gnome/shell/extensions/dash-to-dock/autohide 2>/dev/null || echo "não configurado")
+    FIXED=$(dconf read /org/gnome/shell/extensions/dash-to-dock/dock-fixed 2>/dev/null || echo "não configurado")
+    POS=$(dconf read /org/gnome/shell/extensions/dash-to-dock/dock-position 2>/dev/null || echo "não configurado")
+    
+    echo "  -> Monitor Preferencial: ${MONITOR}"
+    echo "  -> Posição da Dock:      ${POS}"
+    echo "  -> Dock Fixa:            ${FIXED}"
+    echo "  -> Autohide:             ${AUTOHIDE}"
+    
+    if [ "${MONITOR}" = "'primary'" ] || [ "${MONITOR}" = "'DP-1'" ]; then
+        pass "Dock apontando para monitor ativo principal"
+    elif [ "${MONITOR}" = "'DP-3'" ]; then
+        fail "Dock apontando para monitor desconectado (DP-3)!"
+    fi
+fi
+
+echo ""
+echo "4. Papel de Parede e Temas:"
+BG_URI=$(gsettings get org.gnome.desktop.background picture-uri 2>/dev/null || echo "desconhecido")
+echo "  -> Wallpaper URI: ${BG_URI}"
+GTK_TH=$(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null || echo "desconhecido")
+echo "  -> Tema GTK:      ${GTK_TH}"
+IC_TH=$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null || echo "desconhecido")
+echo "  -> Tema de Ícones: ${IC_TH}"
+
+echo ""
+echo "5. Fontes:"
+if fc-list : family | grep -iq "JetBrainsMono"; then
+    pass "JetBrainsMono Nerd Font: Instalada"
+else
+    warn "JetBrainsMono Nerd Font: Não encontrada no cache de fontes"
+fi
+
+if fc-list : family | grep -iq "Inter"; then
+    pass "Inter: Instalada"
+else
+    warn "Inter: Não encontrada no cache de fontes"
+fi
+
+echo ""
+echo "=============================================================================="
+echo "Diagnóstico concluído!"
