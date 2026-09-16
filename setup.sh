@@ -7,6 +7,25 @@ set -euo pipefail
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="${REPO_DIR}/scripts"
 
+# Trava de segurança: impede execução acidental no usuário 'gustavo'
+if [ "${USER}" = "gustavo" ] && [ "${1:-}" != "--force-apply-to-gustavo" ]; then
+    echo "=============================================================================="
+    echo "🛑 TRAVA DE SEGURANÇA ATIVA!"
+    echo "Você está no usuário principal 'gustavo'. Para proteger a integridade do seu"
+    echo "ambiente diário, este rice deve ser executado exclusivamente no usuário 'rice'."
+    echo ""
+    echo "👉 Como prosseguir com segurança:"
+    echo "  1. Encerre a sessão ou clique em 'Trocar de Usuário' no menu do Zorin OS"
+    echo "  2. Entre na conta 'rice' (senha: rice123)"
+    echo "  3. Abra o terminal na conta 'rice' e execute:"
+    echo "       cd ~/ricezisto && ./setup.sh"
+    echo ""
+    echo "Caso futuramente deseje aplicar intencionalmente no usuário principal, use:"
+    echo "  ./setup.sh --force-apply-to-gustavo"
+    echo "=============================================================================="
+    exit 1
+fi
+
 echo "=============================================================================="
 echo "                   RICEZISTO - CATPPUCCIN MOCHA MAUVE SETUP                   "
 echo "=============================================================================="
@@ -61,16 +80,13 @@ fi
 # Passo 3: Configurar GNOME Shell e Extensões
 echo ""
 echo "[Passo 3/3] Configurando GNOME Desktop..."
-"${SCRIPTS_DIR}/apply-gnome.sh" "${1:-effects}"
+"${SCRIPTS_DIR}/apply-gnome.sh" "${1:-}"
 
 echo ""
 echo "=============================================================================="
 echo "                 RICEZISTO APLICADO COM SUCESSO! 🎉                           "
 echo "=============================================================================="
 echo "Dicas:"
-echo "  - Para alternar entre efeitos orgânicos e modo limpo:"
-echo "      ${REPO_DIR}/scripts/apply-gnome.sh clean"
-echo "      ${REPO_DIR}/scripts/apply-gnome.sh effects"
 echo "  - Para restaurar suas configurações anteriores a qualquer momento:"
 echo "      ${REPO_DIR}/scripts/restore.sh"
 echo "=============================================================================="
