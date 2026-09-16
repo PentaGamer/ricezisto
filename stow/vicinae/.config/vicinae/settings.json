@@ -28,6 +28,9 @@
     "opacity": 0.98,
     "material": "blur",
     "rounding": 14,
+    "clock": {
+      "enabled": false
+    },
     "client_side_decorations": {
       "enabled": true,
       "border_width": 1,
@@ -46,28 +49,52 @@
   },
   "favorites": [
     "applications:kitty",
-    "applications:org.gnome.Nautilus"
+    "applications:org.gnome.Nautilus",
+    "applications:brave-browser"
   ],
-  "fallbacks": [
-    "files:search"
-  ],
+  "fallbacks": [],
   "providers": {
     "applications": {
       "enabled": true
     },
+    "clipboard": {
+      "enabled": true
+    },
+    "calculator": {
+      "enabled": false
+    },
+    "core": {
+      "enabled": false
+    },
+    "developer": {
+      "enabled": false
+    },
+    "files": {
+      "enabled": false
+    },
+    "font": {
+      "enabled": false
+    },
+    "manage-shortcuts": {
+      "enabled": false
+    },
+    "power": {
+      "enabled": false
+    },
+    "raycast-compat": {
+      "enabled": false
+    },
+    "snippets": {
+      "enabled": false
+    },
     "system": {
-      "enabled": true,
-      "entrypoints": {
-        "browse-apps": {
-          "enabled": true
-        },
-        "run": {
-          "enabled": true
-        },
-        "toggle-mute": {
-          "enabled": true
-        }
-      }
+      "enabled": false
+    },
+    "theme": {
+      "enabled": false
+    },
+    "wm": {
+      "enabled": false
     }
   }
 }

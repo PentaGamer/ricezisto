@@ -42,6 +42,7 @@ check_link "${HOME}/.config/rofi/config.rasi" "Rofi Config"
 check_link "${HOME}/.config/rofi/powermenu.sh" "Rofi Powermenu"
 check_link "${HOME}/.config/vicinae/settings.json" "Vicinae Settings"
 check_link "${HOME}/.config/vicinae/powermenu.sh" "Vicinae Powermenu"
+check_link "${HOME}/.config/vicinae/clipboard.sh" "Vicinae Clipboard Toggle"
 check_link "${HOME}/.local/share/vicinae/themes/catppuccin-mocha-mauve.toml" "Vicinae Theme (Catppuccin)"
 
 echo ""
@@ -159,6 +160,14 @@ if echo "${CUSTOM_BINDS}" | grep -q "custom2"; then
     pass "Powermenu Vicinae (${POWER_BIND}): Ativo em custom2 (${POWER_CMD})"
 else
     warn "Powermenu Vicinae: Atalho customizado ausente"
+fi
+
+if echo "${CUSTOM_BINDS}" | grep -q "custom3"; then
+    CLIP_BIND=$(gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding 2>/dev/null || echo "")
+    CLIP_CMD=$(gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ command 2>/dev/null || echo "")
+    pass "Clipboard Vicinae (${CLIP_BIND}): Ativo em custom3 (${CLIP_CMD})"
+else
+    warn "Clipboard Vicinae: Atalho customizado ausente"
 fi
 
 echo ""
