@@ -56,5 +56,9 @@ _Avoid_: Agente remoto, execução cruzada
 Lançador de aplicativos e central de comandos moderna e nativa (C++/Qt) para Wayland/X11, operando como daemon em segundo plano com suporte fluido a teclado, fechamento automático ao perder o foco e temas em TOML.
 _Avoid_: Menu legado, launcher monolítico, dmenu
 
+**Vicinae Powermenu**:
+Menu de encerramento de sessão e gerenciamento de energia integrado ao motor do Vicinae (`vicinae dmenu`), exibindo opções de bloqueio, suspensão, logout, reinício e desligamento com tema Catppuccin Mocha Mauve, navegação suave por setas e fechamento automático ao perder o foco.
+_Avoid_: Powermenu legado, diálogo X11 travado
+
 
 

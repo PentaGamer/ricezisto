@@ -29,10 +29,11 @@ Substituir o Rofi pelo **Vicinae** como o lançador de aplicações oficial do R
 3. **Mapeamento Ergonômico de Atalhos no GNOME**:
    - Atualizar `scripts/apply-keybindings.sh` para apontar `Super + Space` diretamente para `vicinae toggle`.
    - O comando nativo `vicinae toggle` gerencia alternância instantânea entre abrir e fechar a janela.
-4. **Desacoplamento e Manutenção do Powermenu**:
-   - Manter o menu de energia leve em `stow/rofi/.config/rofi/powermenu.sh` vinculado a `Super + BackSpace`, removendo camadas de sobreposição artificiais que causavam telas pretas.
+4. **Menu de Energia Nativo (Vicinae Powermenu)**:
+   - Implementação de `stow/vicinae/.config/vicinae/powermenu.sh` utilizando o comando nativo `vicinae dmenu`.
+   - Remoção definitiva do Rofi do fluxo ativo de atalhos, vinculando `Super + BackSpace` diretamente ao Powermenu do Vicinae.
 5. **Automação no Pipeline (`setup.sh` & `check-status.sh`)**:
-   - Automatizar a criação dos symlinks do Vicinae no `setup.sh`.
+   - Automatizar a criação dos symlinks do Vicinae (Launcher & Powermenu) no `setup.sh`.
    - Adicionar verificações de integridade e status do serviço daemon no `scripts/check-status.sh`.
 
 ---
@@ -42,4 +43,5 @@ Substituir o Rofi pelo **Vicinae** como o lançador de aplicações oficial do R
 1. **Issue 01 (`issues/01-vicinae-stow-and-theme.md`)**: Estruturar módulo `stow/vicinae` com `settings.json` e tema `catppuccin-mocha-mauve.toml`.
 2. **Issue 02 (`issues/02-vicinae-systemd-daemon.md`)**: Configurar e automatizar o daemon `vicinae.service` no `setup.sh`.
 3. **Issue 03 (`issues/03-vicinae-keybindings-integration.md`)**: Atualizar o atalho `Super + Space` no GNOME para `vicinae toggle`.
-4. **Issue 04 (`issues/04-cleanup-and-diagnostics.md`)**: Simplificar o Powermenu (removendo wrapper com tela preta), atualizar `scripts/check-status.sh` e validar testes de homologação.
+4. **Issue 04 (`issues/04-cleanup-and-diagnostics.md`)**: Simplificar diagnósticos, atualizar `scripts/check-status.sh` e validar testes de homologação.
+5. **Issue 05 (`issues/05-vicinae-powermenu-integration.md`)**: Implementar Powermenu nativo no Vicinae (`vicinae dmenu`) vinculado a `Super + BackSpace`.

@@ -29,11 +29,12 @@ Substituir o Rofi pelo **Vicinae** como o lançador de aplicações oficial do R
 3. **Mapeamento Ergonômico de Atalhos no GNOME**:
    - Atualizar `scripts/apply-keybindings.sh` para apontar `Super + Space` diretamente para `vicinae toggle`.
    - O comando nativo `vicinae toggle` gerencia alternância instantânea entre abrir e fechar a janela.
-4. **Desacoplamento e Manutenção do Powermenu**:
-   - Manter o menu de energia leve em `stow/rofi/.config/rofi/powermenu.sh` vinculado a `Super + BackSpace`, removendo camadas de sobreposição artificiais que causavam telas pretas.
+4. **Menu de Energia Nativo (Vicinae Powermenu)**:
+   - Implementação de `stow/vicinae/.config/vicinae/powermenu.sh` utilizando o comando nativo `vicinae dmenu`.
+   - Remoção definitiva do Rofi do fluxo ativo de atalhos, vinculando `Super + BackSpace` diretamente ao Powermenu do Vicinae.
 5. **Automação no Pipeline (`setup.sh` & `check-status.sh`)**:
-   - Automatizar a criação dos symlinks do Vicinae no `setup.sh`.
-   - Adicionar verificações de integridade e status do serviço daemon no `scripts/check-status.sh`.
+   - Automatizar a criação dos symlinks do Vicinae (Launcher & Powermenu) no `setup.sh`.
+   - Adicionar verificações de integridade dos arquivos e status do serviço daemon no `scripts/check-status.sh`.
 
 ---
 
@@ -44,8 +45,9 @@ Substituir o Rofi pelo **Vicinae** como o lançador de aplicações oficial do R
 3. Como usuário, ao clicar em qualquer ponto fora da janela do Vicinae (ou mudar o foco), quero que ele feche imediatamente sem que a tela fique preta.
 4. Como usuário, ao pressionar `Super + Space` enquanto o Vicinae estiver aberto, quero que ele feche imediatamente (comportamento *toggle* nativo).
 5. Como usuário, ao pressionar `Escape`, quero que o Vicinae feche de maneira ágil.
-6. Como desenvolvedor, quero que todas as configurações do Vicinae estejam contidas em `stow/vicinae`, facilitando sincronizações futuras entre o usuário `rice` e `gustavo`.
-7. Como mantenedor do sistema, quero que o script `./setup.sh` garanta que o serviço `vicinae.service` esteja ativo e funcional no ambiente de testes.
+6. Como usuário, ao pressionar `Super + BackSpace`, quero abrir um menu de energia moderno e ágil no estilo Vicinae, navegável por setas, com busca rápida e fechamento imediato ao clicar fora.
+7. Como desenvolvedor, quero que todas as configurações do Vicinae estejam contidas em `stow/vicinae`, facilitando sincronizações futuras entre o usuário `rice` e `gustavo`.
+8. Como mantenedor do sistema, quero que o script `./setup.sh` garanta que o serviço `vicinae.service` e os atalhos estejam ativos e funcionais no ambiente de testes.
 
 ---
 
