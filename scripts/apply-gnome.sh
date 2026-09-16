@@ -100,7 +100,7 @@ dconf write /org/gnome/shell/extensions/dash-to-dock/autohide false
 dconf write /org/gnome/shell/extensions/dash-to-dock/intellihide false
 dconf write /org/gnome/shell/extensions/dash-to-dock/extend-height false
 dconf write /org/gnome/shell/extensions/dash-to-dock/dock-position "'BOTTOM'"
-dconf write /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size 48
+dconf write /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size 36
 dconf write /org/gnome/shell/extensions/dash-to-dock/custom-theme-shrink true
 dconf write /org/gnome/shell/extensions/dash-to-dock/transparency-mode "'FIXED'"
 dconf write /org/gnome/shell/extensions/dash-to-dock/background-opacity 0.82
