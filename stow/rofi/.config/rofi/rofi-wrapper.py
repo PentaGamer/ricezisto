@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # ==============================================================================
-# Ricezisto - Rofi Backdrop & Click-to-Close Wrapper
+# Ricezisto - Rofi Transparent Backdrop & Click-to-Close Wrapper
 # ==============================================================================
-# Cria uma sobreposição transparente e escurecida (estilo Pop!_OS / macOS Spotlight)
-# que fecha automaticamente o Rofi ou o Powermenu ao clicar fora da janela.
-# Suporta também toggle automático no atalho de teclado.
+# Cria uma sobreposição 100% transparente (invisível) cobrindo a tela.
+# Permite ver o desktop, papel de parede e janelas normalmente (sem tela preta),
+# mas captura cliques fora do Rofi/Powermenu para fechá-los imediatamente.
+# Suporta também toggle automático no atalho de teclado e tecla Escape.
 # ==============================================================================
 
 import os
@@ -37,7 +38,25 @@ class RofiBackdropManager:
         display = Gdk.Display.get_default()
         n_monitors = display.get_n_monitors() if display else 1
 
+        # Provedor CSS para transparência completa sem fundo opaco do tema
+        screen = Gdk.Screen.get_default()
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_data(b'''
+        window.transparent-backdrop {
+            background-color: transparent;
+            background: transparent;
+            box-shadow: none;
+            border: none;
+        }
+        ''')
+        Gtk.StyleContext.add_provider_for_screen(
+            screen, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
+
         for i in range(n_monitors):
+            monitor = display.get_monitor(i)
+            geom = monitor.get_geometry()
+
             win = Gtk.Window(type=Gtk.WindowType.TOPLEVEL)
             win.set_title('rofi-backdrop')
             win.set_role('rofi-backdrop')
@@ -45,13 +64,18 @@ class RofiBackdropManager:
             win.set_skip_taskbar_hint(True)
             win.set_skip_pager_hint(True)
             win.set_app_paintable(True)
+            win.set_position(Gtk.WindowPosition.CENTER)
 
-            screen = win.get_screen()
             visual = screen.get_rgba_visual()
             if visual:
                 win.set_visual(visual)
 
-            win.fullscreen_on_monitor(screen, i)
+            win.get_style_context().add_class('transparent-backdrop')
+
+            # Definir dimensões sem ativar o modo fullscreen (o fullscreen no Mutter força fundo preto)
+            win.set_default_size(geom.width, geom.height)
+            win.resize(geom.width, geom.height)
+
             win.connect('draw', self.on_draw)
             win.connect('button-press-event', self.on_dismiss)
             win.connect('scroll-event', self.on_dismiss)
@@ -73,9 +97,8 @@ class RofiBackdropManager:
         GLib.timeout_add(30, self.check_proc_alive)
 
     def on_draw(self, widget, cr):
-        # Efeito scrim translúcido elegante (40% opacidade escura estilo Pop!_OS)
-        cr.set_source_rgba(0.04, 0.04, 0.08, 0.40)
-        cr.set_operator(cairo.OPERATOR_SOURCE)
+        # 100% transparente (limpa a superfície sem pintar cor sólida)
+        cr.set_operator(cairo.OPERATOR_CLEAR)
         cr.paint()
         return False
 
