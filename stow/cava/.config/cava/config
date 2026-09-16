@@ -1,0 +1,49 @@
+# ==============================================================================
+# Ricezisto - CAVA Audio Visualizer Configuration
+# Tema: Catppuccin Mocha Mauve
+# ==============================================================================
+
+[general]
+# Taxa de quadros para fluidez no terminal Kitty
+framerate = 60
+
+# Sensibilidade dinâmica automática (ajusta o ganho automaticamente)
+autosens = 1
+
+# Quantidade de barras (0 = auto-ajuste à largura da janela)
+bars = 0
+bar_width = 2
+bar_spacing = 1
+
+# Faixa de frequências audíveis (50Hz a 12kHz)
+lower_cutoff_freq = 50
+higher_cutoff_freq = 12000
+
+[input]
+# Captura nativa via PipeWire / PulseAudio
+method = pulse
+source = auto
+
+[output]
+# Renderizador ncurses estéreo
+method = ncurses
+style = stereo
+
+[color]
+# Gradiente Catppuccin Mocha Mauve
+# Da base fria (Sapphire/Blue/Lavender) ao ápice no tom Mauve
+gradient = 1
+gradient_count = 6
+gradient_color_1 = '#74c7ec'
+gradient_color_2 = '#89b4fa'
+gradient_color_3 = '#b4befe'
+gradient_color_4 = '#eba0ac'
+gradient_color_5 = '#f5c2e7'
+gradient_color_6 = '#cba6f7'
+
+[smoothing]
+# Suavização orgânica das transições
+integral = 75
+monstercat = 1
+waves = 0
+gravity = 100

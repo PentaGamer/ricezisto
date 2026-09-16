@@ -54,7 +54,7 @@ echo "[Passo 3/4] Aplicando Dotfiles..."
 mkdir -p "${HOME}/.config" "${HOME}/.local/bin"
 
 # Desfazer eventuais symlinks de diretórios inteiros para evitar links circulares
-for dir_link in "${HOME}/.config/kitty" "${HOME}/.config/fastfetch" "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0" "${HOME}/.config/bat" "${HOME}/.config/rofi" "${HOME}/.config/vicinae"; do
+for dir_link in "${HOME}/.config/kitty" "${HOME}/.config/fastfetch" "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0" "${HOME}/.config/bat" "${HOME}/.config/rofi" "${HOME}/.config/vicinae" "${HOME}/.config/cava"; do
     if [ -L "${dir_link}" ]; then
         rm -f "${dir_link}"
     fi
@@ -119,6 +119,12 @@ ln -sf "${REPO_DIR}/stow/vicinae/.config/vicinae/clipboard.sh" "${HOME}/.config/
 ln -sf "${REPO_DIR}/stow/vicinae/.local/share/vicinae/themes/catppuccin-mocha-mauve.toml" "${HOME}/.local/share/vicinae/themes/catppuccin-mocha-mauve.toml"
 chmod +x "${REPO_DIR}/stow/vicinae/.config/vicinae/powermenu.sh" "${REPO_DIR}/stow/vicinae/.config/vicinae/clipboard.sh"
 echo "  -> Vicinae (Launcher, Powermenu & Clipboard) vinculado em ~/.config/vicinae e ~/.local/share/vicinae"
+
+# Cava (Visualizador de Áudio Catppuccin Mocha Mauve)
+mkdir -p "${HOME}/.config/cava"
+rm -f "${HOME}/.config/cava/config"
+ln -sf "${REPO_DIR}/stow/cava/.config/cava/config" "${HOME}/.config/cava/config"
+echo "  -> Cava vinculado em ~/.config/cava"
 
 # Ativar daemon do Vicinae via systemd user
 if command -v systemctl >/dev/null 2>&1 && [ -f "/usr/local/lib/systemd/user/vicinae.service" ]; then
