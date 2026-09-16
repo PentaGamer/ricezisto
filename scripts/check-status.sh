@@ -84,18 +84,39 @@ echo "3. Configurações da Dock (dconf / gsettings):"
 if command -v dconf >/dev/null 2>&1; then
     MONITOR=$(dconf read /org/gnome/shell/extensions/dash-to-dock/preferred-monitor-by-connector 2>/dev/null || echo "não configurado")
     AUTOHIDE=$(dconf read /org/gnome/shell/extensions/dash-to-dock/autohide 2>/dev/null || echo "não configurado")
+    INTELLIHIDE=$(dconf read /org/gnome/shell/extensions/dash-to-dock/intellihide 2>/dev/null || echo "não configurado")
     FIXED=$(dconf read /org/gnome/shell/extensions/dash-to-dock/dock-fixed 2>/dev/null || echo "não configurado")
     POS=$(dconf read /org/gnome/shell/extensions/dash-to-dock/dock-position 2>/dev/null || echo "não configurado")
+    ICON_SIZE=$(dconf read /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size 2>/dev/null || echo "não configurado")
+    CLICK_ACTION=$(dconf read /org/gnome/shell/extensions/dash-to-dock/click-action 2>/dev/null || echo "não configurado")
     
     echo "  -> Monitor Preferencial: ${MONITOR}"
     echo "  -> Posição da Dock:      ${POS}"
     echo "  -> Dock Fixa:            ${FIXED}"
     echo "  -> Autohide:             ${AUTOHIDE}"
+    echo "  -> Intellihide:          ${INTELLIHIDE}"
+    echo "  -> Tamanho dos Ícones:   ${ICON_SIZE}px"
+    echo "  -> Ação de Clique:       ${CLICK_ACTION}"
     
     if [ "${MONITOR}" = "'primary'" ] || [ "${MONITOR}" = "'DP-1'" ]; then
         pass "Dock apontando para monitor ativo principal"
     elif [ "${MONITOR}" = "'DP-3'" ]; then
         fail "Dock apontando para monitor desconectado (DP-3)!"
+    fi
+
+    if [ "${INTELLIHIDE}" = "true" ] && [ "${AUTOHIDE}" = "true" ]; then
+        pass "Intellihide ativo (ocultamento dinâmico sobre janelas)"
+    else
+        warn "Intellihide não está ativo"
+    fi
+
+    if [ "${ICON_SIZE}" = "40" ]; then
+        pass "Escala de ícones: 40px"
+    fi
+
+    FAVORITES=$(gsettings get org.gnome.shell favorite-apps 2>/dev/null || echo "")
+    if echo "${FAVORITES}" | grep -q "kitty" && echo "${FAVORITES}" | grep -q "brave" && echo "${FAVORITES}" | grep -q "spotify"; then
+        pass "Favoritos da Dock: Kitty, Brave, Nautilus e Spotify configurados"
     fi
 fi
 

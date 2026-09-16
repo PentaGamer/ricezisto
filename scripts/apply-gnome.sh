@@ -90,24 +90,29 @@ except Exception as e:
     pass
 " 2>/dev/null || true
 
-# 7. Configurar Dash to Dock (Floating Pill Dock Visível e Correção de Monitor)
+# 7. Configurar Dash to Dock (Floating Pill Dock com Intellihide)
 echo "  -> Configurando Floating Dock (Dash to Dock)..."
 dconf write /org/gnome/shell/extensions/dash-to-dock/preferred-monitor-by-connector "'primary'"
 dconf write /org/gnome/shell/extensions/dash-to-dock/preferred-monitor -1
 dconf write /org/gnome/shell/extensions/dash-to-dock/multi-monitor false
-dconf write /org/gnome/shell/extensions/dash-to-dock/dock-fixed true
-dconf write /org/gnome/shell/extensions/dash-to-dock/autohide false
-dconf write /org/gnome/shell/extensions/dash-to-dock/intellihide false
+dconf write /org/gnome/shell/extensions/dash-to-dock/dock-fixed false
+dconf write /org/gnome/shell/extensions/dash-to-dock/autohide true
+dconf write /org/gnome/shell/extensions/dash-to-dock/intellihide true
+dconf write /org/gnome/shell/extensions/dash-to-dock/require-pressure-to-show false
 dconf write /org/gnome/shell/extensions/dash-to-dock/extend-height false
 dconf write /org/gnome/shell/extensions/dash-to-dock/dock-position "'BOTTOM'"
-dconf write /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size 36
+dconf write /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size 40
+dconf write /org/gnome/shell/extensions/dash-to-dock/click-action "'focus-minimize-or-previews'"
 dconf write /org/gnome/shell/extensions/dash-to-dock/custom-theme-shrink true
 dconf write /org/gnome/shell/extensions/dash-to-dock/transparency-mode "'FIXED'"
 dconf write /org/gnome/shell/extensions/dash-to-dock/background-opacity 0.82
 dconf write /org/gnome/shell/extensions/dash-to-dock/show-show-apps-button true
-dconf write /org/gnome/shell/extensions/dash-to-dock/show-mounts false
+dconf write /org/gnome/shell/extensions/dash-to-dock/show-mounts true
 dconf write /org/gnome/shell/extensions/dash-to-dock/show-trash false
 dconf write /org/gnome/shell/extensions/dash-to-dock/running-indicator-style "'DOTS'"
+
+# Aplicativos favoritos fixados na Dock
+gsettings set org.gnome.shell favorite-apps "['kitty.desktop', 'brave-browser.desktop', 'org.gnome.Nautilus.desktop', 'com.spotify.Client.desktop']"
 
 # 8. Animações Padrões do Zorin (Sem efeitos de fluidez/gelatina)
 echo "  -> Mantendo animações padrões e rápidas do Zorin OS..."
