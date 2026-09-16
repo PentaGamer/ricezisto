@@ -61,16 +61,30 @@ Esse comando irá:
 
 ---
 
-### 2. Aplicar as Configurações no Usuário Sandbox (`rice`)
-Você pode rodar o setup imediatamente na conta `rice` via terminal:
+### 2. Sincronizar os Arquivos para a Pasta do Usuário `rice`
+Para garantir que o usuário de testes tenha sua própria cópia independente em `/home/rice/ricezisto` (sem acessar a sua pasta `/home/gustavo`), execute no usuário `gustavo`:
 
 ```bash
-sudo -u rice bash -c "cd /home/rice/ricezisto && ./setup.sh"
+sudo ./scripts/sync-to-rice.sh
 ```
 
 ---
 
-### 3. Testar a Sessão Gráfica
+### 3. Aplicar as Configurações no Usuário Sandbox (`rice`)
+Faça login na conta **`rice`** (senha: `rice123`) ou execute via terminal:
+
+```bash
+cd ~/ricezisto && ./setup.sh
+```
+
+Para validar se todos os componentes estão ativos e corretos:
+```bash
+~/ricezisto/scripts/check-status.sh
+```
+
+---
+
+### 4. Testar a Sessão Gráfica
 1. Clique no canto superior direito da tela do Zorin OS (menu de energia/status).
 2. Selecione **Trocar de Usuário** (ou **Encerrar Sessão**).
 3. Selecione o usuário **`rice`** e digite a senha: `rice123`.
