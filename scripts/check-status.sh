@@ -22,7 +22,9 @@ check_link() {
     local target="$1"
     local desc="$2"
     if [ -L "${target}" ]; then
-        pass "${desc}: Link simbólico ativo -> $(readlink -f "${target}")"
+        local dest
+        dest="$(readlink -f "${target}" 2>/dev/null || readlink "${target}")"
+        pass "${desc}: Link simbólico ativo -> ${dest}"
     elif [ -f "${target}" ]; then
         warn "${desc}: Arquivo regular presente (não é link simbólico)"
     else
@@ -43,6 +45,8 @@ if command -v gnome-extensions >/dev/null 2>&1; then
     
     if echo "${ENABLED_EXTS}" | grep -q "dash-to-dock"; then
         pass "Dash to Dock: Habilitada"
+    elif gsettings get org.gnome.shell enabled-extensions 2>/dev/null | grep -q "dash-to-dock"; then
+        warn "Dash to Dock: Ativada nas configurações, mas aguardando novo login para ser instanciada pelo GNOME Shell Wayland"
     else
         warn "Dash to Dock: Desabilitada"
     fi
@@ -99,13 +103,13 @@ echo "  -> Tema de Ícones: ${IC_TH}"
 
 echo ""
 echo "5. Fontes:"
-if fc-list : family | grep -iq "JetBrains"; then
+if fc-list : family | grep -i "JetBrains" >/dev/null 2>&1; then
     pass "JetBrainsMono Nerd Font: Instalada"
 else
     warn "JetBrainsMono Nerd Font: Não encontrada no cache de fontes"
 fi
 
-if fc-list : family | grep -iq "Inter"; then
+if fc-list : family | grep -i "Inter" >/dev/null 2>&1; then
     pass "Inter: Instalada"
 else
     warn "Inter: Não encontrada no cache de fontes"

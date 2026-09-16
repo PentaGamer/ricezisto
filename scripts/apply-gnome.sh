@@ -51,13 +51,13 @@ if [ -d "/usr/share/icons/Catppuccin-Mocha-Mauve-Cursors" ] || [ -d "${HOME}/.lo
 fi
 
 # 4. Tipografia Moderna (Inter + JetBrainsMono Nerd Font)
-if fc-list : family | grep -iq "Inter"; then
+if fc-list : family | grep -i "Inter" >/dev/null 2>&1; then
     gsettings set org.gnome.desktop.interface font-name 'Inter 10.5'
     gsettings set org.gnome.desktop.interface document-font-name 'Inter 11'
     gsettings set org.gnome.desktop.wm.preferences titlebar-font 'Inter Bold 10.5'
 fi
 
-if fc-list : family | grep -iq "JetBrains"; then
+if fc-list : family | grep -i "JetBrains" >/dev/null 2>&1; then
     gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font 10.5'
 fi
 

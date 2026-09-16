@@ -23,6 +23,7 @@ if [ -d "${GUSTAVO_DOCK}" ]; then
     # Sistema
     mkdir -p "/usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com"
     cp -ru "${GUSTAVO_DOCK}"/* "/usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/" 2>/dev/null || true
+    chmod -R a+rX "/usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com" 2>/dev/null || true
     
     # Rice
     mkdir -p "/home/rice/.local/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com"

@@ -53,6 +53,13 @@ echo ""
 echo "[Passo 3/4] Aplicando Dotfiles..."
 mkdir -p "${HOME}/.config" "${HOME}/.local/bin"
 
+# Desfazer eventuais symlinks de diretórios inteiros para evitar links circulares
+for dir_link in "${HOME}/.config/kitty" "${HOME}/.config/fastfetch" "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0"; do
+    if [ -L "${dir_link}" ]; then
+        rm -f "${dir_link}"
+    fi
+done
+
 # Kitty
 mkdir -p "${HOME}/.config/kitty"
 rm -f "${HOME}/.config/kitty/kitty.conf" "${HOME}/.config/kitty/colors-mocha.conf"
