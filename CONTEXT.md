@@ -48,4 +48,9 @@ _Avoid_: Teste em produção, rollout cego
 Conjunto nativo e consistente de animações rápidas do sistema operacional, prescindindo de efeitos elásticos (wobbly) ou distorções visuais (lâmpada mágica).
 _Avoid_: Efeitos fluidos, janelas gelatinosas
 
+**Sandbox Agent**:
+Instância do assistente Antigravity executada no contexto de processo da conta sandbox, permitindo manipular sessões D-Bus, extensões e dotfiles em tempo real.
+_Avoid_: Agente remoto, execução cruzada
+
+
 
