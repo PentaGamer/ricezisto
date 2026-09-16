@@ -36,7 +36,7 @@ echo "==========================================================================
 # Passo 1: Executar snapshot preventivo de segurança
 echo ""
 echo "[Passo 1/4] Executando Backup Snapshot Preventivo..."
-chmod +x "${SCRIPTS_DIR}/backup.sh" "${SCRIPTS_DIR}/restore.sh" "${SCRIPTS_DIR}/apply-gnome.sh" "${SCRIPTS_DIR}/check-status.sh"
+chmod +x "${SCRIPTS_DIR}/backup.sh" "${SCRIPTS_DIR}/restore.sh" "${SCRIPTS_DIR}/apply-gnome.sh" "${SCRIPTS_DIR}/check-status.sh" "${SCRIPTS_DIR}/apply-keybindings.sh"
 "${SCRIPTS_DIR}/backup.sh"
 
 # Passo 2: Copiar papel de parede para o espaço do usuário

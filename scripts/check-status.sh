@@ -116,5 +116,36 @@ else
 fi
 
 echo ""
+echo "6. Atalhos do GNOME (Keybindings):"
+CLOSE_BIND=$(gsettings get org.gnome.desktop.wm.keybindings close 2>/dev/null || echo "")
+if echo "${CLOSE_BIND}" | grep -q "<Super>q"; then
+    pass "Fechar Janela (<Super>q): Configurado"
+else
+    warn "Fechar Janela (<Super>q): Não configurado (${CLOSE_BIND})"
+fi
+
+HOME_BIND=$(gsettings get org.gnome.settings-daemon.plugins.media-keys home 2>/dev/null || echo "")
+if echo "${HOME_BIND}" | grep -q "<Super>e"; then
+    pass "Gerenciador de Arquivos (<Super>e): Configurado"
+else
+    warn "Gerenciador de Arquivos (<Super>e): Não configurado (${HOME_BIND})"
+fi
+
+CUSTOM_BINDS=$(gsettings get org.gnome.settings-daemon.plugins.media-keys custom-keybindings 2>/dev/null || echo "")
+if echo "${CUSTOM_BINDS}" | grep -q "custom0"; then
+    KITTY_BIND=$(gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding 2>/dev/null || echo "")
+    pass "Terminal Kitty (${KITTY_BIND}): Ativo em custom0"
+else
+    warn "Terminal Kitty: Atalho customizado ausente"
+fi
+
+if echo "${CUSTOM_BINDS}" | grep -q "custom1"; then
+    ROFI_BIND=$(gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding 2>/dev/null || echo "")
+    pass "Launcher Rofi (${ROFI_BIND}): Ativo em custom1"
+else
+    warn "Launcher Rofi: Atalho customizado ausente"
+fi
+
+echo ""
 echo "=============================================================================="
 echo "Diagnóstico concluído!"

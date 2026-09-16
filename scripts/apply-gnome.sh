@@ -122,4 +122,9 @@ dconf write /org/gnome/shell/extensions/blur-my-shell/dash-to-dock/blur true
 dconf write /org/gnome/shell/extensions/blur-my-shell/overview/blur true
 dconf write /org/gnome/shell/extensions/blur-my-shell/lockscreen/blur true
 
+# 10. Mapeamento de Atalhos Ergonômicos
+if [ -x "${SCRIPT_DIR}/apply-keybindings.sh" ]; then
+    "${SCRIPT_DIR}/apply-keybindings.sh" "${1:-}"
+fi
+
 echo "==> [Ricezisto GNOME] Configurações aplicadas com sucesso!"
