@@ -29,7 +29,7 @@ import subprocess
 
 bindings = [
     ('custom0', 'Terminal Kitty', 'kitty', '<Super>Return'),
-    ('custom1', 'Rofi Launcher', 'rofi -show drun', '<Super>space'),
+    ('custom1', 'Rofi Launcher', 'bash -c ~/.config/rofi/launcher.sh', '<Super>space'),
     ('custom2', 'Rofi Powermenu', 'bash -c ~/.config/rofi/powermenu.sh', '<Super>BackSpace')
 ]
 

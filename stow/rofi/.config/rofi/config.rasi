@@ -17,6 +17,7 @@ configuration {
     display-run: " 󰌧  Run ";
     display-window: " 󰕰  Window ";
     sidebar-mode: true;
+    click-to-exit: true;
 }
 
 @theme "catppuccin-mocha"

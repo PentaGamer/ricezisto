@@ -40,6 +40,8 @@ check_link "${HOME}/.config/gtk-4.0/gtk.css" "GTK4 / Libadwaita CSS"
 check_link "${HOME}/.config/bat/config" "Bat Config"
 check_link "${HOME}/.config/rofi/config.rasi" "Rofi Config"
 check_link "${HOME}/.config/rofi/powermenu.sh" "Rofi Powermenu"
+check_link "${HOME}/.config/rofi/launcher.sh" "Rofi Launcher Script"
+check_link "${HOME}/.config/rofi/rofi-wrapper.py" "Rofi Backdrop Wrapper"
 
 echo ""
 echo "2. Verificação de Extensões GNOME:"
