@@ -99,7 +99,7 @@ echo "  -> Tema de Ícones: ${IC_TH}"
 
 echo ""
 echo "5. Fontes:"
-if fc-list : family | grep -iq "JetBrainsMono"; then
+if fc-list : family | grep -iq "JetBrains"; then
     pass "JetBrainsMono Nerd Font: Instalada"
 else
     warn "JetBrainsMono Nerd Font: Não encontrada no cache de fontes"

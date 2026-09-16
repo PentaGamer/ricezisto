@@ -6,7 +6,10 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "${SCRIPT_DIR}")"
-WALLPAPER_FILE="${REPO_DIR}/wallpapers/catppuccin-clearnight.jpg"
+WALLPAPER_FILE="${HOME}/.local/share/backgrounds/catppuccin-clearnight.jpg"
+if [ ! -f "${WALLPAPER_FILE}" ]; then
+    WALLPAPER_FILE="${REPO_DIR}/wallpapers/catppuccin-clearnight.jpg"
+fi
 
 # Trava de segurança: impede execução no usuário principal 'gustavo'
 if [ "${USER}" = "gustavo" ] && [ "${1:-}" != "--force-apply-to-gustavo" ]; then
@@ -17,22 +20,28 @@ fi
 
 echo "==> [Ricezisto GNOME] Aplicando configurações do ambiente gráfico..."
 
-# 0. Compilar esquemas locais do GLib para suporte nativo a extensões
+# 0. Atualizar cache de fontes
+fc-cache -f 2>/dev/null || true
+
+# 1. Compilar esquemas locais do GLib para suporte nativo a extensões
 mkdir -p "${HOME}/.local/share/glib-2.0/schemas/"
-if [ -d "/usr/share/gnome-shell/extensions/blur-my-shell@aunetx/schemas" ]; then
-    cp -u /usr/share/gnome-shell/extensions/blur-my-shell@aunetx/schemas/*.xml "${HOME}/.local/share/glib-2.0/schemas/" 2>/dev/null || true
-fi
-if [ -d "${HOME}/.local/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/schemas" ]; then
-    cp -u "${HOME}/.local/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/schemas/"*.xml "${HOME}/.local/share/glib-2.0/schemas/" 2>/dev/null || true
-fi
+for schema_dir in \
+    "/usr/share/gnome-shell/extensions/blur-my-shell@aunetx/schemas" \
+    "/usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/schemas" \
+    "${HOME}/.local/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/schemas" \
+    "${HOME}/.local/share/gnome-shell/extensions/blur-my-shell@aunetx/schemas"; do
+    if [ -d "${schema_dir}" ]; then
+        cp -u "${schema_dir}"/*.xml "${HOME}/.local/share/glib-2.0/schemas/" 2>/dev/null || true
+    fi
+done
 glib-compile-schemas "${HOME}/.local/share/glib-2.0/schemas/" 2>/dev/null || true
 
-# 1. Configurar Dark Mode e Esquema de Cores
+# 2. Configurar Dark Mode e Esquema de Cores
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Catppuccin-Mocha-Standard-Mauve-Dark' 2>/dev/null || \
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
-# 2. Ícones e Cursores
+# 3. Ícones e Cursores
 if [ -d "/usr/share/icons/Papirus-Dark" ] || [ -d "${HOME}/.local/share/icons/Papirus-Dark" ]; then
     gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
 fi
@@ -41,18 +50,18 @@ if [ -d "/usr/share/icons/Catppuccin-Mocha-Mauve-Cursors" ] || [ -d "${HOME}/.lo
     gsettings set org.gnome.desktop.interface cursor-theme 'Catppuccin-Mocha-Mauve-Cursors'
 fi
 
-# 3. Tipografia Moderna (Inter + JetBrainsMono Nerd Font)
+# 4. Tipografia Moderna (Inter + JetBrainsMono Nerd Font)
 if fc-list : family | grep -iq "Inter"; then
     gsettings set org.gnome.desktop.interface font-name 'Inter 10.5'
     gsettings set org.gnome.desktop.interface document-font-name 'Inter 11'
     gsettings set org.gnome.desktop.wm.preferences titlebar-font 'Inter Bold 10.5'
 fi
 
-if fc-list : family | grep -iq "JetBrainsMono"; then
+if fc-list : family | grep -iq "JetBrains"; then
     gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font 10.5'
 fi
 
-# 4. Wallpaper Oficial Catppuccin Mocha
+# 5. Wallpaper Oficial Catppuccin Mocha
 if [ -f "${WALLPAPER_FILE}" ]; then
     echo "  -> Definindo papel de parede: ${WALLPAPER_FILE}"
     gsettings set org.gnome.desktop.background picture-uri "file://${WALLPAPER_FILE}"
@@ -60,20 +69,29 @@ if [ -f "${WALLPAPER_FILE}" ]; then
     gsettings set org.gnome.desktop.background picture-options 'zoom'
 fi
 
-# 5. Habilitar Extensão User Themes
-gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com 2>/dev/null || true
-
-# 6. Desacoplar Zorin Taskbar e Ativar Dash to Dock Flutuante
-if gnome-extensions list | grep -q "zorin-taskbar@zorinos.com"; then
-    echo "  -> Desativando barra integrada do Zorin..."
-    gnome-extensions disable zorin-taskbar@zorinos.com 2>/dev/null || true
-fi
+# 6. Habilitar Extensões Essenciais via Python D-Bus
+echo "  -> Configurando lista de extensões ativas..."
+python3 -c "
+import subprocess, ast
+try:
+    out = subprocess.check_output(['gsettings', 'get', 'org.gnome.shell', 'enabled-extensions']).decode('utf-8').strip()
+    exts = ast.literal_eval(out)
+    modified = False
+    for ext in ['dash-to-dock@micxgx.gmail.com', 'blur-my-shell@aunetx', 'user-theme@gnome-shell-extensions.gcampax.github.com']:
+        if ext not in exts:
+            exts.append(ext)
+            modified = True
+    if 'zorin-taskbar@zorinos.com' in exts:
+        exts.remove('zorin-taskbar@zorinos.com')
+        modified = True
+    if modified:
+        subprocess.check_call(['gsettings', 'set', 'org.gnome.shell', 'enabled-extensions', str(exts).replace('\"', '\'')])
+except Exception as e:
+    pass
+" 2>/dev/null || true
 
 # 7. Configurar Dash to Dock (Floating Pill Dock Visível e Correção de Monitor)
 echo "  -> Configurando Floating Dock (Dash to Dock)..."
-gnome-extensions enable dash-to-dock@micxgx.gmail.com 2>/dev/null || true
-
-# Escrever configurações diretamente no dconf para evitar falhas de monitor desconectado
 dconf write /org/gnome/shell/extensions/dash-to-dock/preferred-monitor-by-connector "'primary'"
 dconf write /org/gnome/shell/extensions/dash-to-dock/preferred-monitor -1
 dconf write /org/gnome/shell/extensions/dash-to-dock/multi-monitor false
@@ -97,21 +115,7 @@ gsettings set org.gnome.desktop.interface enable-animations true
 gnome-extensions disable zorin-window-move-effect@zorinos.com 2>/dev/null || true
 gnome-extensions disable zorin-magic-lamp-effect@zorinos.com 2>/dev/null || true
 
-# 9. Configurar e Habilitar Blur my Shell
-echo "  -> Registrando Blur my Shell..."
-python3 -c "
-import subprocess, ast
-try:
-    out = subprocess.check_output(['gsettings', 'get', 'org.gnome.shell', 'enabled-extensions']).decode('utf-8').strip()
-    exts = ast.literal_eval(out)
-    if 'blur-my-shell@aunetx' not in exts:
-        exts.append('blur-my-shell@aunetx')
-        subprocess.check_call(['gsettings', 'set', 'org.gnome.shell', 'enabled-extensions', str(exts).replace('\"', '\'')])
-except Exception as e:
-    pass
-" 2>/dev/null || true
-
-# Configurações do Blur my Shell via dconf
+# 9. Configurações do Blur my Shell via dconf
 dconf write /org/gnome/shell/extensions/blur-my-shell/panel/blur true
 dconf write /org/gnome/shell/extensions/blur-my-shell/panel/pipeline "'pipeline_default'"
 dconf write /org/gnome/shell/extensions/blur-my-shell/dash-to-dock/blur true
