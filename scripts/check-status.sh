@@ -40,8 +40,8 @@ check_link "${HOME}/.config/gtk-4.0/gtk.css" "GTK4 / Libadwaita CSS"
 check_link "${HOME}/.config/bat/config" "Bat Config"
 check_link "${HOME}/.config/rofi/config.rasi" "Rofi Config"
 check_link "${HOME}/.config/rofi/powermenu.sh" "Rofi Powermenu"
-check_link "${HOME}/.config/rofi/launcher.sh" "Rofi Launcher Script"
-check_link "${HOME}/.config/rofi/rofi-wrapper.py" "Rofi Backdrop Wrapper"
+check_link "${HOME}/.config/vicinae/settings.json" "Vicinae Settings"
+check_link "${HOME}/.local/share/vicinae/themes/catppuccin-mocha-mauve.toml" "Vicinae Theme (Catppuccin)"
 
 echo ""
 echo "2. Verificação de Extensões GNOME:"
@@ -145,10 +145,11 @@ else
 fi
 
 if echo "${CUSTOM_BINDS}" | grep -q "custom1"; then
-    ROFI_BIND=$(gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding 2>/dev/null || echo "")
-    pass "Launcher Rofi (${ROFI_BIND}): Ativo em custom1"
+    LAUNCHER_BIND=$(gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding 2>/dev/null || echo "")
+    LAUNCHER_CMD=$(gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command 2>/dev/null || echo "")
+    pass "Launcher Vicinae (${LAUNCHER_BIND}): Ativo em custom1 (${LAUNCHER_CMD})"
 else
-    warn "Launcher Rofi: Atalho customizado ausente"
+    warn "Launcher Vicinae: Atalho customizado ausente"
 fi
 
 echo ""
@@ -168,5 +169,20 @@ else
 fi
 
 echo ""
+echo "8. Status do Vicinae Daemon (vicinae.service):"
+if command -v vicinae >/dev/null 2>&1; then
+    pass "Binário Vicinae: Instalado ($(command -v vicinae))"
+else
+    fail "Binário Vicinae: Não encontrado no PATH"
+fi
+
+if systemctl --user is-active vicinae.service >/dev/null 2>&1; then
+    pass "Vicinae Daemon: Ativo e em execução (systemd --user)"
+else
+    warn "Vicinae Daemon: Inativo (execute 'systemctl --user start vicinae.service')"
+fi
+
+echo ""
 echo "=============================================================================="
 echo "Diagnóstico concluído!"
+echo "=============================================================================="

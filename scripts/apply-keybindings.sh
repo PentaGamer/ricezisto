@@ -29,7 +29,7 @@ import subprocess
 
 bindings = [
     ('custom0', 'Terminal Kitty', 'kitty', '<Super>Return'),
-    ('custom1', 'Rofi Launcher', 'bash -c ~/.config/rofi/launcher.sh', '<Super>space'),
+    ('custom1', 'Vicinae Launcher', 'vicinae toggle', '<Super>space'),
     ('custom2', 'Rofi Powermenu', 'bash -c ~/.config/rofi/powermenu.sh', '<Super>BackSpace')
 ]
 
@@ -49,6 +49,6 @@ echo "  -> Super + Return     : Abrir Terminal Kitty"
 echo "  -> Super + Q          : Fechar janela ativa"
 echo "  -> Super + E          : Abrir Arquivos (Nautilus)"
 echo "  -> Super + M          : Alternar Janela Maximizada"
-echo "  -> Super + Space      : Lançador de Aplicativos (Rofi)"
+echo "  -> Super + Space      : Lançador de Aplicativos (Vicinae)"
 echo "  -> Super + BackSpace  : Menu de Energia (Powermenu)"
 echo "==> [Ricezisto Keybindings] Atalhos aplicados com sucesso!"

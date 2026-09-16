@@ -1,6 +1,6 @@
 # Issue 02: Habilitação e Gestão do Daemon vicinae.service
 
-Status: `ready-for-agent`  
+Status: `resolved`  
 Type: `task`  
 Iniciativa: `vicinae-launcher`  
 

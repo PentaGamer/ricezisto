@@ -1,6 +1,6 @@
 # Issue 01: Módulo GNU Stow e Tema Catppuccin Mocha Mauve para Vicinae
 
-Status: `ready-for-agent`  
+Status: `resolved`  
 Type: `task`  
 Iniciativa: `vicinae-launcher`  
 

@@ -4,12 +4,10 @@
 # ==============================================================================
 set -euo pipefail
 
-# Se não estiver envolvido pelo wrapper de backdrop, auto-executar com o wrapper
-if [ "${ROFI_WRAPPED:-0}" != "1" ]; then
-    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    if [ -f "${SCRIPT_DIR}/rofi-wrapper.py" ]; then
-        exec python3 "${SCRIPT_DIR}/rofi-wrapper.py" "$0" "$@"
-    fi
+# Toggle: se o rofi já estiver aberto, fecha e sai
+if pgrep -x rofi >/dev/null 2>&1; then
+    pkill -x rofi
+    exit 0
 fi
 
 # Opções do Menu

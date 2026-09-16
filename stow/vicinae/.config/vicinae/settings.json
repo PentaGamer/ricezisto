@@ -1,0 +1,73 @@
+{
+  "$schema": "https://vicinae.com/schemas/config.json",
+  "close_on_focus_loss": true,
+  "consider_preedit": false,
+  "activate_on_single_click": true,
+  "wrap_navigation": true,
+  "escape_key_behavior": "close_window",
+  "pop_to_root_on_close": true,
+  "favicon_service": "twenty",
+  "font": {
+    "rendering": "qt",
+    "normal": {
+      "family": "Inter",
+      "size": 10.5
+    }
+  },
+  "theme": {
+    "dark": {
+      "name": "catppuccin-mocha-mauve",
+      "icon_theme": "Papirus-Dark"
+    },
+    "light": {
+      "name": "catppuccin-mocha-mauve",
+      "icon_theme": "Papirus-Dark"
+    }
+  },
+  "launcher_window": {
+    "opacity": 0.98,
+    "material": "blur",
+    "rounding": 14,
+    "client_side_decorations": {
+      "enabled": true,
+      "border_width": 1,
+      "shadow_size": 16
+    },
+    "compact_mode": {
+      "enabled": false
+    },
+    "size": {
+      "width": 750,
+      "height": 450
+    },
+    "layer_shell": {
+      "enabled": false
+    }
+  },
+  "favorites": [
+    "applications:kitty",
+    "applications:org.gnome.Nautilus"
+  ],
+  "fallbacks": [
+    "files:search"
+  ],
+  "providers": {
+    "applications": {
+      "enabled": true
+    },
+    "system": {
+      "enabled": true,
+      "entrypoints": {
+        "browse-apps": {
+          "enabled": true
+        },
+        "run": {
+          "enabled": true
+        },
+        "toggle-mute": {
+          "enabled": true
+        }
+      }
+    }
+  }
+}

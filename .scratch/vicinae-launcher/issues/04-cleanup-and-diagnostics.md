@@ -1,6 +1,6 @@
 # Issue 04: Limpeza do Rofi Wrapper e Diagnósticos do Vicinae
 
-Status: `ready-for-agent`  
+Status: `resolved`  
 Type: `task`  
 Iniciativa: `vicinae-launcher`  
 

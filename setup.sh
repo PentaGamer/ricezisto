@@ -54,7 +54,7 @@ echo "[Passo 3/4] Aplicando Dotfiles..."
 mkdir -p "${HOME}/.config" "${HOME}/.local/bin"
 
 # Desfazer eventuais symlinks de diretórios inteiros para evitar links circulares
-for dir_link in "${HOME}/.config/kitty" "${HOME}/.config/fastfetch" "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0" "${HOME}/.config/bat" "${HOME}/.config/rofi"; do
+for dir_link in "${HOME}/.config/kitty" "${HOME}/.config/fastfetch" "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0" "${HOME}/.config/bat" "${HOME}/.config/rofi" "${HOME}/.config/vicinae"; do
     if [ -L "${dir_link}" ]; then
         rm -f "${dir_link}"
     fi
@@ -100,16 +100,29 @@ ln -sf "${REPO_DIR}/stow/gtk/.config/gtk-3.0/gtk.css" "${HOME}/.config/gtk-3.0/g
 ln -sf "${REPO_DIR}/stow/gtk/.config/gtk-4.0/gtk.css" "${HOME}/.config/gtk-4.0/gtk.css"
 echo "  -> GTK3 e GTK4 vinculados em ~/.config/gtk-*"
 
-# Rofi (Launcher, Powermenu & Click-to-Close Backdrop)
+# Rofi (Powermenu)
 mkdir -p "${HOME}/.config/rofi"
 rm -f "${HOME}/.config/rofi/config.rasi" "${HOME}/.config/rofi/catppuccin-mocha.rasi" "${HOME}/.config/rofi/powermenu.sh" "${HOME}/.config/rofi/launcher.sh" "${HOME}/.config/rofi/rofi-wrapper.py"
 ln -sf "${REPO_DIR}/stow/rofi/.config/rofi/config.rasi" "${HOME}/.config/rofi/config.rasi"
 ln -sf "${REPO_DIR}/stow/rofi/.config/rofi/catppuccin-mocha.rasi" "${HOME}/.config/rofi/catppuccin-mocha.rasi"
 ln -sf "${REPO_DIR}/stow/rofi/.config/rofi/powermenu.sh" "${HOME}/.config/rofi/powermenu.sh"
-ln -sf "${REPO_DIR}/stow/rofi/.config/rofi/launcher.sh" "${HOME}/.config/rofi/launcher.sh"
-ln -sf "${REPO_DIR}/stow/rofi/.config/rofi/rofi-wrapper.py" "${HOME}/.config/rofi/rofi-wrapper.py"
-chmod +x "${REPO_DIR}/stow/rofi/.config/rofi/powermenu.sh" "${REPO_DIR}/stow/rofi/.config/rofi/launcher.sh" "${REPO_DIR}/stow/rofi/.config/rofi/rofi-wrapper.py"
-echo "  -> Rofi vinculado em ~/.config/rofi"
+chmod +x "${REPO_DIR}/stow/rofi/.config/rofi/powermenu.sh"
+echo "  -> Rofi (Powermenu) vinculado em ~/.config/rofi"
+
+# Vicinae (Launcher Nativo Wayland com tema Catppuccin Mocha Mauve)
+mkdir -p "${HOME}/.config/vicinae" "${HOME}/.local/share/vicinae/themes"
+rm -f "${HOME}/.config/vicinae/settings.json"
+rm -f "${HOME}/.local/share/vicinae/themes/catppuccin-mocha-mauve.toml"
+ln -sf "${REPO_DIR}/stow/vicinae/.config/vicinae/settings.json" "${HOME}/.config/vicinae/settings.json"
+ln -sf "${REPO_DIR}/stow/vicinae/.local/share/vicinae/themes/catppuccin-mocha-mauve.toml" "${HOME}/.local/share/vicinae/themes/catppuccin-mocha-mauve.toml"
+echo "  -> Vicinae vinculado em ~/.config/vicinae e ~/.local/share/vicinae"
+
+# Ativar daemon do Vicinae via systemd user
+if command -v systemctl >/dev/null 2>&1 && [ -f "/usr/local/lib/systemd/user/vicinae.service" ]; then
+    systemctl --user daemon-reload 2>/dev/null || true
+    systemctl --user enable --now vicinae.service 2>/dev/null || true
+    echo "  -> Serviço vicinae.service ativo no systemd de usuário"
+fi
 
 # Atualizar cache de fontes
 fc-cache -f 2>/dev/null || true

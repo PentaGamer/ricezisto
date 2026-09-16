@@ -1,6 +1,6 @@
 # Issue 03: Integração do Atalho Super + Space com Vicinae Toggle
 
-Status: `ready-for-agent`  
+Status: `resolved`  
 Type: `task`  
 Iniciativa: `vicinae-launcher`  
 
