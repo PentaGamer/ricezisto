@@ -37,6 +37,7 @@ check_link "${HOME}/.zshrc" "Zsh RC"
 check_link "${HOME}/.config/starship.toml" "Starship Config"
 check_link "${HOME}/.config/fastfetch/config.jsonc" "Fastfetch Config"
 check_link "${HOME}/.config/gtk-4.0/gtk.css" "GTK4 / Libadwaita CSS"
+check_link "${HOME}/.config/bat/config" "Bat Config"
 
 echo ""
 echo "2. Verificação de Extensões GNOME:"
@@ -144,6 +145,22 @@ if echo "${CUSTOM_BINDS}" | grep -q "custom1"; then
     pass "Launcher Rofi (${ROFI_BIND}): Ativo em custom1"
 else
     warn "Launcher Rofi: Atalho customizado ausente"
+fi
+
+echo ""
+echo "7. Suite CLI Moderna (eza, bat, fzf, zoxide):"
+for cli_tool in eza bat fzf zoxide; do
+    if command -v "${cli_tool}" >/dev/null 2>&1; then
+        pass "Utilitário ${cli_tool}: Instalado ($(command -v "${cli_tool}"))"
+    else
+        warn "Utilitário ${cli_tool}: Não encontrado no PATH"
+    fi
+done
+
+if command -v bat >/dev/null 2>&1 && bat --list-themes 2>/dev/null | grep -i "Catppuccin Mocha" >/dev/null 2>&1; then
+    pass "Bat Theme: Catppuccin Mocha compilado no cache"
+else
+    warn "Bat Theme: Catppuccin Mocha não detectado no cache"
 fi
 
 echo ""

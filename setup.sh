@@ -54,7 +54,7 @@ echo "[Passo 3/4] Aplicando Dotfiles..."
 mkdir -p "${HOME}/.config" "${HOME}/.local/bin"
 
 # Desfazer eventuais symlinks de diretórios inteiros para evitar links circulares
-for dir_link in "${HOME}/.config/kitty" "${HOME}/.config/fastfetch" "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0"; do
+for dir_link in "${HOME}/.config/kitty" "${HOME}/.config/fastfetch" "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0" "${HOME}/.config/bat"; do
     if [ -L "${dir_link}" ]; then
         rm -f "${dir_link}"
     fi
@@ -82,6 +82,16 @@ mkdir -p "${HOME}/.config/fastfetch"
 rm -f "${HOME}/.config/fastfetch/config.jsonc"
 ln -sf "${REPO_DIR}/stow/fastfetch/.config/fastfetch/config.jsonc" "${HOME}/.config/fastfetch/config.jsonc"
 echo "  -> Fastfetch vinculado em ~/.config/fastfetch"
+
+# Bat (Catppuccin Mocha)
+mkdir -p "${HOME}/.config/bat/themes"
+rm -f "${HOME}/.config/bat/config"
+ln -sf "${REPO_DIR}/stow/bat/.config/bat/config" "${HOME}/.config/bat/config"
+if [ -f "${REPO_DIR}/stow/bat/.config/bat/themes/Catppuccin Mocha.tmTheme" ]; then
+    cp -u "${REPO_DIR}/stow/bat/.config/bat/themes/Catppuccin Mocha.tmTheme" "${HOME}/.config/bat/themes/"
+    bat cache --build >/dev/null 2>&1 || true
+fi
+echo "  -> Bat vinculado em ~/.config/bat"
 
 # GTK CSS (Libadwaita / GTK3 e GTK4)
 mkdir -p "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0"

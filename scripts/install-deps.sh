@@ -36,7 +36,16 @@ apt-get install -y \
     unzip \
     tar \
     xz-utils \
-    libglib2.0-bin
+    libglib2.0-bin \
+    bat \
+    fzf \
+    zoxide \
+    eza
+
+# Garantir symlink para invocação do bat
+if [ -f "/usr/bin/batcat" ] && [ ! -f "/usr/local/bin/bat" ]; then
+    ln -sf /usr/bin/batcat /usr/local/bin/bat
+fi
 
 # 2. Instalar Starship Prompt
 echo ""
