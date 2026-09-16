@@ -47,7 +47,9 @@ Substituir o Rofi pelo **Vicinae** como o lançador de aplicações oficial do R
 5. Como usuário, ao pressionar `Escape`, quero que o Vicinae feche de maneira ágil.
 6. Como usuário, ao pressionar `Super + BackSpace`, quero abrir um menu de energia moderno e ágil no estilo Vicinae, navegável por setas, com busca rápida e fechamento imediato ao clicar fora.
 7. Como desenvolvedor, quero que todas as configurações do Vicinae estejam contidas em `stow/vicinae`, facilitando sincronizações futuras entre o usuário `rice` e `gustavo`.
-8. Como mantenedor do sistema, quero que o script `./setup.sh` garanta que o serviço `vicinae.service` e os atalhos estejam ativos e funcionais no ambiente de testes.
+8. Como usuário, ao pressionar `Super + V`, quero abrir diretamente o histórico da área de transferência (Clipboard) no Vicinae para colar itens rapidamente.
+9. Como usuário, quero uma busca rápida sem poluição visual ou comandos internos avulsos, exibindo apenas aplicativos e favoritos personalizados (Kitty, Nautilus e Brave).
+10. Como mantenedor do sistema, quero que o script `./setup.sh` garanta que o serviço `vicinae.service` e todos os atalhos estejam ativos e funcionais no ambiente de testes.
 
 ---
 

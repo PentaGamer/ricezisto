@@ -45,3 +45,4 @@ Substituir o Rofi pelo **Vicinae** como o lançador de aplicações oficial do R
 3. **Issue 03 (`issues/03-vicinae-keybindings-integration.md`)**: Atualizar o atalho `Super + Space` no GNOME para `vicinae toggle`.
 4. **Issue 04 (`issues/04-cleanup-and-diagnostics.md`)**: Simplificar diagnósticos, atualizar `scripts/check-status.sh` e validar testes de homologação.
 5. **Issue 05 (`issues/05-vicinae-powermenu-integration.md`)**: Implementar Powermenu nativo no Vicinae (`vicinae dmenu`) vinculado a `Super + BackSpace`.
+6. **Issue 06 (`issues/06-vicinae-customization-and-clipboard.md`)**: Personalizar provedores (foco em Apps e Clipboard), ocultar recursos ruidosos e adicionar atalho dedicado `Super + V`.
