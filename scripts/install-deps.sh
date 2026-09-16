@@ -40,7 +40,8 @@ apt-get install -y \
     bat \
     fzf \
     zoxide \
-    eza
+    eza \
+    rofi
 
 # Garantir symlink para invocação do bat
 if [ -f "/usr/bin/batcat" ] && [ ! -f "/usr/local/bin/bat" ]; then

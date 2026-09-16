@@ -38,6 +38,8 @@ check_link "${HOME}/.config/starship.toml" "Starship Config"
 check_link "${HOME}/.config/fastfetch/config.jsonc" "Fastfetch Config"
 check_link "${HOME}/.config/gtk-4.0/gtk.css" "GTK4 / Libadwaita CSS"
 check_link "${HOME}/.config/bat/config" "Bat Config"
+check_link "${HOME}/.config/rofi/config.rasi" "Rofi Config"
+check_link "${HOME}/.config/rofi/powermenu.sh" "Rofi Powermenu"
 
 echo ""
 echo "2. Verificação de Extensões GNOME:"

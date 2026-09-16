@@ -54,7 +54,7 @@ echo "[Passo 3/4] Aplicando Dotfiles..."
 mkdir -p "${HOME}/.config" "${HOME}/.local/bin"
 
 # Desfazer eventuais symlinks de diretórios inteiros para evitar links circulares
-for dir_link in "${HOME}/.config/kitty" "${HOME}/.config/fastfetch" "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0" "${HOME}/.config/bat"; do
+for dir_link in "${HOME}/.config/kitty" "${HOME}/.config/fastfetch" "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0" "${HOME}/.config/bat" "${HOME}/.config/rofi"; do
     if [ -L "${dir_link}" ]; then
         rm -f "${dir_link}"
     fi
@@ -99,6 +99,15 @@ rm -f "${HOME}/.config/gtk-3.0/gtk.css" "${HOME}/.config/gtk-4.0/gtk.css"
 ln -sf "${REPO_DIR}/stow/gtk/.config/gtk-3.0/gtk.css" "${HOME}/.config/gtk-3.0/gtk.css"
 ln -sf "${REPO_DIR}/stow/gtk/.config/gtk-4.0/gtk.css" "${HOME}/.config/gtk-4.0/gtk.css"
 echo "  -> GTK3 e GTK4 vinculados em ~/.config/gtk-*"
+
+# Rofi (Launcher & Powermenu)
+mkdir -p "${HOME}/.config/rofi"
+rm -f "${HOME}/.config/rofi/config.rasi" "${HOME}/.config/rofi/catppuccin-mocha.rasi" "${HOME}/.config/rofi/powermenu.sh"
+ln -sf "${REPO_DIR}/stow/rofi/.config/rofi/config.rasi" "${HOME}/.config/rofi/config.rasi"
+ln -sf "${REPO_DIR}/stow/rofi/.config/rofi/catppuccin-mocha.rasi" "${HOME}/.config/rofi/catppuccin-mocha.rasi"
+ln -sf "${REPO_DIR}/stow/rofi/.config/rofi/powermenu.sh" "${HOME}/.config/rofi/powermenu.sh"
+chmod +x "${REPO_DIR}/stow/rofi/.config/rofi/powermenu.sh"
+echo "  -> Rofi vinculado em ~/.config/rofi"
 
 # Atualizar cache de fontes
 fc-cache -f 2>/dev/null || true
