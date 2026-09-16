@@ -52,5 +52,9 @@ _Avoid_: Efeitos fluidos, janelas gelatinosas
 Instância do assistente Antigravity executada no contexto de processo da conta sandbox, permitindo manipular sessões D-Bus, extensões e dotfiles em tempo real.
 _Avoid_: Agente remoto, execução cruzada
 
+**Vicinae Launcher**:
+Lançador de aplicativos e central de comandos moderna e nativa (C++/Qt) para Wayland/X11, operando como daemon em segundo plano com suporte fluido a teclado, fechamento automático ao perder o foco e temas em TOML.
+_Avoid_: Menu legado, launcher monolítico, dmenu
+
 
 
