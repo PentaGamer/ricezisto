@@ -30,7 +30,7 @@ import subprocess
 bindings = [
     ('custom0', 'Terminal Kitty', 'kitty', '<Super>Return'),
     ('custom1', 'Vicinae Launcher', 'vicinae toggle', '<Super>space'),
-    ('custom2', 'Rofi Powermenu', 'bash -c ~/.config/rofi/powermenu.sh', '<Super>BackSpace')
+    ('custom2', 'Vicinae Powermenu', 'bash -c ~/.config/vicinae/powermenu.sh', '<Super>BackSpace')
 ]
 
 paths = []

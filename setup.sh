@@ -107,15 +107,17 @@ ln -sf "${REPO_DIR}/stow/rofi/.config/rofi/config.rasi" "${HOME}/.config/rofi/co
 ln -sf "${REPO_DIR}/stow/rofi/.config/rofi/catppuccin-mocha.rasi" "${HOME}/.config/rofi/catppuccin-mocha.rasi"
 ln -sf "${REPO_DIR}/stow/rofi/.config/rofi/powermenu.sh" "${HOME}/.config/rofi/powermenu.sh"
 chmod +x "${REPO_DIR}/stow/rofi/.config/rofi/powermenu.sh"
-echo "  -> Rofi (Powermenu) vinculado em ~/.config/rofi"
+echo "  -> Rofi (Legado) vinculado em ~/.config/rofi"
 
-# Vicinae (Launcher Nativo Wayland com tema Catppuccin Mocha Mauve)
+# Vicinae (Launcher e Powermenu Nativo Wayland com tema Catppuccin Mocha Mauve)
 mkdir -p "${HOME}/.config/vicinae" "${HOME}/.local/share/vicinae/themes"
-rm -f "${HOME}/.config/vicinae/settings.json"
+rm -f "${HOME}/.config/vicinae/settings.json" "${HOME}/.config/vicinae/powermenu.sh"
 rm -f "${HOME}/.local/share/vicinae/themes/catppuccin-mocha-mauve.toml"
 ln -sf "${REPO_DIR}/stow/vicinae/.config/vicinae/settings.json" "${HOME}/.config/vicinae/settings.json"
+ln -sf "${REPO_DIR}/stow/vicinae/.config/vicinae/powermenu.sh" "${HOME}/.config/vicinae/powermenu.sh"
 ln -sf "${REPO_DIR}/stow/vicinae/.local/share/vicinae/themes/catppuccin-mocha-mauve.toml" "${HOME}/.local/share/vicinae/themes/catppuccin-mocha-mauve.toml"
-echo "  -> Vicinae vinculado em ~/.config/vicinae e ~/.local/share/vicinae"
+chmod +x "${REPO_DIR}/stow/vicinae/.config/vicinae/powermenu.sh"
+echo "  -> Vicinae (Launcher & Powermenu) vinculado em ~/.config/vicinae e ~/.local/share/vicinae"
 
 # Ativar daemon do Vicinae via systemd user
 if command -v systemctl >/dev/null 2>&1 && [ -f "/usr/local/lib/systemd/user/vicinae.service" ]; then

@@ -41,6 +41,7 @@ check_link "${HOME}/.config/bat/config" "Bat Config"
 check_link "${HOME}/.config/rofi/config.rasi" "Rofi Config"
 check_link "${HOME}/.config/rofi/powermenu.sh" "Rofi Powermenu"
 check_link "${HOME}/.config/vicinae/settings.json" "Vicinae Settings"
+check_link "${HOME}/.config/vicinae/powermenu.sh" "Vicinae Powermenu"
 check_link "${HOME}/.local/share/vicinae/themes/catppuccin-mocha-mauve.toml" "Vicinae Theme (Catppuccin)"
 
 echo ""
@@ -150,6 +151,14 @@ if echo "${CUSTOM_BINDS}" | grep -q "custom1"; then
     pass "Launcher Vicinae (${LAUNCHER_BIND}): Ativo em custom1 (${LAUNCHER_CMD})"
 else
     warn "Launcher Vicinae: Atalho customizado ausente"
+fi
+
+if echo "${CUSTOM_BINDS}" | grep -q "custom2"; then
+    POWER_BIND=$(gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding 2>/dev/null || echo "")
+    POWER_CMD=$(gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command 2>/dev/null || echo "")
+    pass "Powermenu Vicinae (${POWER_BIND}): Ativo em custom2 (${POWER_CMD})"
+else
+    warn "Powermenu Vicinae: Atalho customizado ausente"
 fi
 
 echo ""
