@@ -43,7 +43,6 @@ apt-get install -y \
     eza \
     rofi \
     cava \
-    neovim \
     wl-clipboard
 
 # Garantir symlink para invocação do bat

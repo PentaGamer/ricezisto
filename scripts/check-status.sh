@@ -44,7 +44,6 @@ check_link "${HOME}/.config/vicinae/settings.json" "Vicinae Settings"
 check_link "${HOME}/.config/vicinae/powermenu.sh" "Vicinae Powermenu"
 check_link "${HOME}/.config/vicinae/clipboard.sh" "Vicinae Clipboard Toggle"
 check_link "${HOME}/.config/cava/config" "Cava Config"
-check_link "${HOME}/.config/nvim/init.lua" "Neovim Config"
 check_link "${HOME}/.local/share/vicinae/themes/catppuccin-mocha-mauve.toml" "Vicinae Theme (Catppuccin)"
 
 echo ""
@@ -195,7 +194,7 @@ fi
 
 echo ""
 echo "7. Suite CLI Moderna (eza, bat, fzf, zoxide):"
-for cli_tool in eza bat fzf zoxide cava nvim; do
+for cli_tool in eza bat fzf zoxide cava; do
     if command -v "${cli_tool}" >/dev/null 2>&1; then
         pass "Utilitário ${cli_tool}: Instalado ($(command -v "${cli_tool}"))"
     else

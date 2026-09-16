@@ -54,7 +54,7 @@ echo "[Passo 3/4] Aplicando Dotfiles..."
 mkdir -p "${HOME}/.config" "${HOME}/.local/bin"
 
 # Desfazer eventuais symlinks de diretórios inteiros para evitar links circulares
-for dir_link in "${HOME}/.config/kitty" "${HOME}/.config/fastfetch" "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0" "${HOME}/.config/bat" "${HOME}/.config/rofi" "${HOME}/.config/vicinae" "${HOME}/.config/cava" "${HOME}/.config/nvim"; do
+for dir_link in "${HOME}/.config/kitty" "${HOME}/.config/fastfetch" "${HOME}/.config/gtk-3.0" "${HOME}/.config/gtk-4.0" "${HOME}/.config/bat" "${HOME}/.config/rofi" "${HOME}/.config/vicinae" "${HOME}/.config/cava"; do
     if [ -L "${dir_link}" ]; then
         rm -f "${dir_link}"
     fi
@@ -125,12 +125,6 @@ mkdir -p "${HOME}/.config/cava"
 rm -f "${HOME}/.config/cava/config"
 ln -sf "${REPO_DIR}/stow/cava/.config/cava/config" "${HOME}/.config/cava/config"
 echo "  -> Cava vinculado em ~/.config/cava"
-
-# Neovim (Editor Minimalista Catppuccin Mocha Mauve)
-mkdir -p "${HOME}/.config/nvim"
-rm -f "${HOME}/.config/nvim/init.lua"
-ln -sf "${REPO_DIR}/stow/nvim/.config/nvim/init.lua" "${HOME}/.config/nvim/init.lua"
-echo "  -> Neovim vinculado em ~/.config/nvim"
 
 # Ativar daemon do Vicinae via systemd user
 if command -v systemctl >/dev/null 2>&1 && [ -f "/usr/local/lib/systemd/user/vicinae.service" ]; then
