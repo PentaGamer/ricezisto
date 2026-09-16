@@ -44,3 +44,8 @@ _Avoid_: Cor de fundo, tema claro
 Procedimento de teste e validação interativa na conta sandbox antes da liberação e aplicação definitiva dos dotfiles na conta principal.
 _Avoid_: Teste em produção, rollout cego
 
+**Zorin Standard Animations**:
+Conjunto nativo e consistente de animações rápidas do sistema operacional, prescindindo de efeitos elásticos (wobbly) ou distorções visuais (lâmpada mágica).
+_Avoid_: Efeitos fluidos, janelas gelatinosas
+
+
