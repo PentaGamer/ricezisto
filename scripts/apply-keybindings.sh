@@ -4,12 +4,6 @@
 # ==============================================================================
 set -euo pipefail
 
-# Trava de segurança: impede execução acidental no usuário principal 'gustavo'
-if [ "${USER}" = "gustavo" ] && [ "${1:-}" != "--force-apply-to-gustavo" ]; then
-    echo "🛑 TRAVA DE SEGURANÇA: Não execute apply-keybindings.sh diretamente no usuário 'gustavo'!"
-    echo "   Para aplicar no usuário de teste, faça login como 'rice' e execute de lá."
-    exit 1
-fi
 
 echo "==> [Ricezisto Keybindings] Aplicando mapeamento ergonômico de atalhos no GNOME..."
 

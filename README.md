@@ -1,123 +1,132 @@
-# 🍧 Ricezisto — Zorin OS 18 + GNOME 46 (Catppuccin Mocha Mauve)
+# 🍧 Ricezisto — GNOME Desktop Rice (Catppuccin Mocha Mauve)
 
-Ambiente de customização e modularização estética (**rice**) construído sob medida para o **Zorin OS 18.1 (GNOME 46 no Wayland)** com isolamento em usuário sandbox (`rice`), gerenciamento modular via **GNU Stow** e rotina obrigatória de **Backup Snapshot** preventivo.
+Um ambiente de trabalho refinado, minimalista e ergonômico construído para **GNOME 45/46+ no Wayland** (compatível com Zorin OS 18, Ubuntu 24.04+, Pop!_OS e distribuições baseadas em Debian/Ubuntu).
 
----
-
-## 🎨 Especificações Visuais
-
-- **Paleta de Cores**: Catppuccin Mocha (fundo escuro `#1e1e2e`, superfícies `#181825` e `#313244`)
-- **Cor de Destaque (Accent)**: *Mauve* (`#cba6f7`)
-- **Desktop Shell**: GNOME 46 desacoplado do Zorin Taskbar, utilizando **Floating Pill Dock** (*Dash to Dock*) + **Blur my Shell**
-- **Terminal Emulator**: **Kitty** com cantos arredondados, padding suave e transparência com blur
-- **Shell**: **Zsh** ultrarrápido com plugins essenciais assíncronos (`autosuggestions` e `syntax-highlighting`)
-- **Prompt**: **Starship** com tema Catppuccin Mocha Mauve
-- **Fetch CLI**: **Fastfetch** customizado com símbolos Nerd Font
-- **Tipografia**: **Inter** (Interface/Desktop) + **JetBrainsMono Nerd Font** (Terminal/Código)
-- **Tema de Ícones & Cursor**: **Papirus-Dark** + **Catppuccin Mocha Mauve Cursors**
+Baseado na paleta de cores oficial **Catppuccin Mocha** com acento **Mauve** (`#cba6f7`), gerenciamento modular via **GNU Stow**, inicialização nativa em background de ferramentas modernas (Vicinae Daemon) e rotina automática de **Backup Snapshot Preventivo** antes de qualquer alteração.
 
 ---
 
-## 📁 Arquitetura do Repositório
+## ✨ Recursos e Especificações
 
-```
-ricezisto/
-├── CONTEXT.md                    # Glossário de termos canônicos do domínio
-├── docs/adr/                     # Registros de decisões arquiteturais (ADRs)
-│   ├── 0001-sandbox-user-and-stow-with-backups.md
-│   └── 0002-catppuccin-mocha-mauve-gnome-composition.md
-├── scripts/
-│   ├── install-deps.sh           # Instala pacotes do sistema (sudo) e cria usuário 'rice'
-│   ├── backup.sh                 # Gera snapshot preventivo em ~/.rice_backup
-│   ├── restore.sh                # Restaura um snapshot específico ou o mais recente
-│   └── apply-gnome.sh            # Configura extensões, dock, blur e atalhos GNOME
-├── stow/                         # Pacotes modulares gerenciados pelo GNU Stow
-│   ├── kitty/                    # Configurações do terminal Kitty
-│   ├── zsh/                      # .zshrc leve e veloz
-│   ├── starship/                 # Prompt Starship
-│   ├── fastfetch/                # Configuração do Fastfetch
-│   └── gtk/                      # Cores Catppuccin para GTK3 e GTK4/libadwaita
-├── wallpapers/                   # Coleção de wallpapers oficiais Catppuccin Mocha
-└── setup.sh                      # Entrypoint do usuário (Backup + Stow + GNOME)
-```
+- **Paleta de Cores**: Catppuccin Mocha (Base escura `#1e1e2e`, Superfícies `#181825` e `#313244`, Texto `#cdd6f4`).
+- **Acento (Accent)**: *Mauve* (`#cba6f7`).
+- **Dock Flutuante**: Dash to Dock configurada como *Floating Pill* no rodapé com *Intellihide* dinâmico, ícones em 40px, previews de múltiplas instâncias e fundo blindado translúcido com blur.
+- **Efeito de Desfoque**: Blur my Shell ativo no painel superior, na dock e na visão geral de janelas (*Overview*).
+- **Lançador & Menu de Energia**: **Vicinae** nativo em C++/Wayland operando com tempo de resposta imediato (daemon systemd de usuário), navegação contínua por setas, busca de arquivos/apps e menu de desligamento integrado via `vicinae dmenu`.
+- **Área de Transferência**: Histórico visual do Clipboard integrado ao Vicinae via atalho direto.
+- **Terminal Emulator**: **Kitty** com cantos arredondados, margens confortáveis, fonte Nerd Font e paleta Catppuccin Mocha Mauve.
+- **Shell**: **Zsh** otimizado com `autosuggestions` e `syntax-highlighting` assíncronos.
+- **Prompt**: **Starship** informativo, ágil e minimalista.
+- **Visualizador de Áudio**: **Cava** integrado ao terminal com gradiente Catppuccin Mocha Mauve.
+- **Utilitários Modernos**: `eza` (substituto moderno do `ls`), `bat` (cat com sintaxe colorida Catppuccin), `zoxide` (navegação inteligente `cd`), `fzf` e `fastfetch`.
+- **Tipografia**: **Inter** (Desktop e interface) + **JetBrainsMono Nerd Font** (Terminal e editores).
+- **Ícones e Cursores**: **Papirus-Dark** + **Catppuccin Mocha Mauve Cursors**.
 
 ---
 
-## 🚀 Como Executar
+## ⌨️ Atalhos de Teclado Ergonômicos
 
-### 1. Provisionar o Sistema e Criar o Usuário de Testes
-Como envolve instalação de pacotes `apt`, fontes no sistema e criação da conta de usuário, execute com `sudo`:
+| Atalho | Ação | Componente |
+| :--- | :--- | :--- |
+| <kbd>Super</kbd> + <kbd>Space</kbd> | Alternar Lançador de Aplicativos | Vicinae Launcher |
+| <kbd>Super</kbd> + <kbd>BackSpace</kbd> | Menu de Energia (Desligar, Reiniciar, Bloquear) | Vicinae Powermenu |
+| <kbd>Super</kbd> + <kbd>V</kbd> | Histórico da Área de Transferência | Vicinae Clipboard |
+| <kbd>Super</kbd> + <kbd>Return</kbd> | Abrir Terminal | Kitty |
+| <kbd>Super</kbd> + <kbd>Q</kbd> | Fechar Janela em Foco | GNOME Window Manager |
+| <kbd>Super</kbd> + <kbd>E</kbd> | Abrir Gerenciador de Arquivos | Nautilus |
+| <kbd>Super</kbd> + <kbd>M</kbd> | Alternar Maximizar / Restaurar Janela | GNOME Window Manager |
+
+---
+
+## 🚀 Como Instalar em Qualquer Computador com GNOME
+
+### Pré-requisitos
+- Distribuição baseada em **Debian / Ubuntu** (Zorin OS 18, Ubuntu 24.04 LTS, Pop!_OS, Linux Mint Debian Edition, Debian 12+).
+- Ambiente gráfico **GNOME 45 ou 46+** rodando em sessão **Wayland** (ou X11).
+- Conexão com a internet para download de pacotes e temas.
+
+### Instalação em 1 Passo
+
+Abra o terminal em qualquer pasta e execute:
 
 ```bash
-sudo ./scripts/install-deps.sh
+git clone https://github.com/<SEU_USUARIO>/ricezisto.git ~/.config/ricezisto
+cd ~/.config/ricezisto
+./install.sh
 ```
 
-Esse comando irá:
-1. Instalar os pacotes necessários (`stow`, `kitty`, `zsh`, `fonts-inter`, `papirus-icon-theme`, etc.).
-2. Instalar **Starship**, **Fastfetch** e a **JetBrainsMono Nerd Font**.
-3. Baixar os temas e cursores **Catppuccin Mocha Mauve** e a extensão **Blur my Shell**.
-4. Criar o usuário `rice` com senha temporária `rice123` e permissão `sudo`.
-5. Clonar o repositório em `/home/rice/ricezisto`.
+### O que o instalador unificado (`./install.sh`) faz automaticamente:
+1. **Provisiona Dependências de Sistema (`sudo`)**:
+   - Atualiza listas do APT e instala ferramentas essenciais (`kitty`, `zsh`, `stow`, `cava`, `eza`, `bat`, `fzf`, `zoxide`, `fonts-inter`, `papirus-icon-theme`, `wl-clipboard`, etc.).
+   - Baixa e instala a fonte **JetBrainsMono Nerd Font**, o prompt **Starship** e o **Fastfetch**.
+   - Baixa e instala temas GTK e cursores **Catppuccin Mocha Mauve**.
+   - Baixa e registra globalmente as extensões GNOME **Dash to Dock** e **Blur my Shell**, compilando seus esquemas do GLib.
+   - Baixa a release oficial do **Vicinae Launcher**, instala o binário no sistema e registra o daemon `vicinae.service` de usuário.
+2. **Aplica Dotfiles e Configurações no seu Usuário**:
+   - Cria um **Backup Snapshot Preventivo** em `~/.rice_backup/` de todos os arquivos existentes antes de tocar em qualquer configuração.
+   - Cria links simbólicos limpos para as configurações em `~/.config/` via módulos modulares GNU Stow.
+   - Habilita e inicializa o serviço `vicinae.service` no systemd do usuário.
+   - Aplica os temas GTK, ícones, cursores, wallpapers e mapeamento ergonômico de atalhos no GNOME.
+3. **Executa Diagnóstico Completo**:
+   - Roda a suíte de verificação `scripts/check-status.sh` para garantir 100% de conformidade.
+
+> **💡 Dica pós-instalação**: No Wayland, faça **Logout** (Encerrar Sessão) e entre novamente para que o GNOME Shell instancie todas as novas extensões e renderize o desfoque perfeitamente.
 
 ---
 
-### 2. Sincronizar os Arquivos para a Pasta do Usuário `rice`
-Para garantir que o usuário de testes tenha sua própria cópia independente em `/home/rice/ricezisto` (sem acessar a sua pasta `/home/gustavo`), execute no usuário `gustavo`:
+## 🛠️ Diagnóstico e Manutenção
 
+O Ricezisto inclui ferramentas dedicadas para manutenção, auditoria e segurança:
+
+### 1. Diagnóstico de Integridade
+Para checar se todas as extensões, links simbólicos, daemons e atalhos continuam operando normalmente:
 ```bash
-sudo ./scripts/sync-to-rice.sh
+./scripts/check-status.sh
 ```
 
----
-
-### 3. Aplicar as Configurações no Usuário Sandbox (`rice`)
-Faça login na conta **`rice`** (senha: `rice123`) ou execute via terminal:
-
-```bash
-cd ~/ricezisto && ./setup.sh
-```
-
-Para validar se todos os componentes estão ativos e corretos:
-```bash
-~/ricezisto/scripts/check-status.sh
-```
-
----
-
-### 4. Testar a Sessão Gráfica
-1. Clique no canto superior direito da tela do Zorin OS (menu de energia/status).
-2. Selecione **Trocar de Usuário** (ou **Encerrar Sessão**).
-3. Selecione o usuário **`rice`** e digite a senha: `rice123`.
-4. Você entrará na sessão completa do rice (Floating Dock, Blur my Shell, Kitty terminal, Starship prompt e wallpapers).
-
----
-
-### 4. Ajustes Dinâmicos
-
-- **Alternar entre Modo Orgânico (com animações sutis do Zorin) e Modo Limpo (vanilla):**
-  ```bash
-  ./scripts/apply-gnome.sh clean    # Sem efeitos de física
-  ./scripts/apply-gnome.sh effects  # Com lâmpada mágica e janelas suaves
-  ```
-
----
-
-### 5. Migrar para o Usuário Principal (`gustavo`)
-Assim que você validar que o rice na conta `rice` está 100% do seu agrado:
-
-1. Retorne à sua sessão com o usuário `gustavo`.
-2. Execute o `setup.sh` diretamente no seu usuário:
-   ```bash
-   ./setup.sh
-   ```
-3. O script criará automaticamente um **Backup Snapshot** completo de todas as suas configurações atuais antes de aplicar qualquer alteração.
-
----
-
-### 6. Desfazer / Restaurar
-Se por qualquer motivo quiser reverter qualquer alteração feita no seu usuário:
-
+### 2. Desfazer / Restaurar Backup
+Antes de aplicar qualquer modificação, o Ricezisto gera um snapshot completo do estado dos seus dotfiles e da árvore do dconf/gsettings. Se desejar reverter para o estado original:
 ```bash
 ./scripts/restore.sh
 ```
-Ele restaurará instantaneamente os arquivos de configuração e chaves do dconf a partir do último snapshot seguro.
+O script permite selecionar qualquer snapshot salvo em `~/.rice_backup/` ou restaurar automaticamente o mais recente (`latest`).
+
+### 3. Reaplicar Configurações sem Reinstalar Dependências
+Se você editar algum dotfile ou quiser reaplicar apenas a camada de usuário:
+```bash
+./setup.sh
+```
+
+---
+
+## 📁 Estrutura do Repositório
+
+```
+ricezisto/
+├── install.sh                  # Entrypoint principal: provisiona dependências e aplica o rice
+├── setup.sh                    # Entrypoint do usuário: backup preventivo + symlinks + temas
+├── stow/                       # Dotfiles modulares (GNU Stow)
+│   ├── bat/                    # Configurações e tema Catppuccin para o bat
+│   ├── cava/                   # Visualizador de áudio cava com gradiente mauve
+│   ├── fastfetch/              # Configuração do fetch de sistema
+│   ├── gtk/                    # Folha de estilo CSS (GTK3 e GTK4/libadwaita)
+│   ├── kitty/                  # Configurações do terminal Kitty
+│   ├── rofi/                   # Fallback powermenu legado
+│   ├── starship/               # Configuração do prompt Starship
+│   ├── vicinae/                # Lançador, Powermenu, Clipboard e tema Catppuccin
+│   └── zsh/                    # .zshrc enxuto e de alta velocidade
+├── scripts/
+│   ├── install-deps.sh         # Script de instalação de dependências globais (sudo)
+│   ├── apply-gnome.sh          # Configurações de extensões, wallpaper e dconf do GNOME
+│   ├── apply-keybindings.sh    # Atalhos ergonômicos do teclado no GNOME
+│   ├── backup.sh               # Rotina de backup snapshot preventivo
+│   ├── restore.sh              # Ferramenta de restauração de backups
+│   └── check-status.sh         # Diagnóstico completo de integridade
+├── wallpapers/                 # Wallpapers oficiais Catppuccin Mocha
+└── docs/                       # Especificações e Registros de Decisões Arquiteturais (ADRs)
+```
+
+---
+
+## 📄 Licença
+Distribuído sob a licença MIT. Sinta-se à vontade para clonar, customizar e utilizar em quantos computadores desejar!

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Ricezisto - System Dependencies & Sandbox Provisioning Script
-# Executar com: sudo ./scripts/install-deps.sh
+# Ricezisto - System Dependencies & Provisioning Script
+# Executar com: sudo ./scripts/install-deps.sh [--with-sandbox]
 # ==============================================================================
 set -euo pipefail
 
@@ -15,12 +15,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR="$(dirname "${SCRIPT_DIR}")"
 
 echo "=============================================================================="
-echo "          INSTALANDO DEPENDÊNCIAS DO SISTEMA E PROVISIONANDO SANDBOX          "
+echo "         INSTALANDO DEPENDÊNCIAS DO SISTEMA (RICEZISTO - GNOME)               "
 echo "=============================================================================="
 
 # 1. Atualizar e instalar pacotes APT essenciais
 echo ""
-echo "[1/7] Instalando pacotes APT..."
+echo "[1/8] Instalando pacotes APT essenciais..."
 apt-get update -y
 apt-get install -y \
     stow \
@@ -30,6 +30,7 @@ apt-get install -y \
     zsh-syntax-highlighting \
     fonts-inter \
     papirus-icon-theme \
+    gnome-shell-extensions \
     curl \
     wget \
     git \
@@ -52,7 +53,7 @@ fi
 
 # 2. Instalar Starship Prompt
 echo ""
-echo "[2/7] Instalando Starship Prompt..."
+echo "[2/8] Instalando Starship Prompt..."
 if ! command -v starship >/dev/null 2>&1; then
     curl -sS https://starship.rs/install.sh | sh -s -- --yes
 else
@@ -61,7 +62,7 @@ fi
 
 # 3. Instalar Fastfetch
 echo ""
-echo "[3/7] Instalando Fastfetch..."
+echo "[3/8] Instalando Fastfetch..."
 if ! command -v fastfetch >/dev/null 2>&1; then
     TEMP_DIR=$(mktemp -d)
     echo "  -> Baixando pacote DEB do Fastfetch..."
@@ -77,7 +78,7 @@ fi
 
 # 4. Instalar JetBrainsMono Nerd Font
 echo ""
-echo "[4/7] Instalando JetBrainsMono Nerd Font..."
+echo "[4/8] Instalando JetBrainsMono Nerd Font..."
 FONT_DIR="/usr/local/share/fonts/JetBrainsMono"
 if [ ! -d "${FONT_DIR}" ]; then
     mkdir -p "${FONT_DIR}"
@@ -90,7 +91,7 @@ fi
 
 # 5. Instalar Temas e Cursores Catppuccin
 echo ""
-echo "[5/7] Instalando temas GTK e Cursores Catppuccin..."
+echo "[5/8] Instalando temas GTK e Cursores Catppuccin..."
 # Cursores
 CURSOR_DIR="/usr/share/icons/Catppuccin-Mocha-Mauve-Cursors"
 if [ ! -d "${CURSOR_DIR}" ]; then
@@ -111,47 +112,104 @@ if [ ! -d "${THEME_DIR}" ]; then
     rm -rf "${TEMP_DIR}"
 fi
 
-# 6. Instalar Extensão Blur my Shell globalmente
+# 6. Instalar Extensões GNOME (Blur my Shell e Dash to Dock)
 echo ""
-echo "[6/7] Instalando extensão Blur my Shell..."
-EXT_DIR="/usr/share/gnome-shell/extensions/blur-my-shell@aunetx"
-if [ ! -d "${EXT_DIR}" ]; then
+echo "[6/8] Instalando extensões GNOME globais..."
+BLUR_DIR="/usr/share/gnome-shell/extensions/blur-my-shell@aunetx"
+if [ ! -d "${BLUR_DIR}" ]; then
     TEMP_DIR=$(mktemp -d)
-    mkdir -p "${EXT_DIR}"
+    mkdir -p "${BLUR_DIR}"
+    echo "  -> Baixando Blur my Shell..."
     curl -sL "https://github.com/aunetx/blur-my-shell/releases/download/v72/blur-my-shell%40aunetx.shell-extension.zip" -o "${TEMP_DIR}/blur.zip"
-    unzip -q "${TEMP_DIR}/blur.zip" -d "${EXT_DIR}" || true
-    glib-compile-schemas "${EXT_DIR}/schemas" 2>/dev/null || true
+    unzip -q "${TEMP_DIR}/blur.zip" -d "${BLUR_DIR}" || true
+    glib-compile-schemas "${BLUR_DIR}/schemas" 2>/dev/null || true
     rm -rf "${TEMP_DIR}"
-fi
-
-# 7. Criar e Provisionar o Usuário Sandbox 'rice'
-echo ""
-echo "[7/7] Configurando usuário sandbox 'rice'..."
-if ! id "rice" >/dev/null 2>&1; then
-    echo "  -> Criando usuário 'rice'..."
-    useradd -m -s /bin/zsh -G sudo,video,render rice
-    echo "rice:rice123" | chpasswd
-    echo "  -> Usuário 'rice' criado com senha inicial: rice123"
 else
-    echo "  -> Usuário 'rice' já existe."
+    echo "  -> Blur my Shell já instalado."
 fi
 
-# Garantir acesso ao repositório dentro da home do rice
-RICE_HOME="/home/rice"
-RICE_REPO="${RICE_HOME}/ricezisto"
+DOCK_DIR="/usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com"
+if [ ! -d "${DOCK_DIR}" ]; then
+    TEMP_DIR=$(mktemp -d)
+    mkdir -p "${DOCK_DIR}"
+    echo "  -> Baixando Dash to Dock..."
+    DOCK_URL=$(curl -sL https://api.github.com/repos/micheleg/dash-to-dock/releases/latest | grep "browser_download_url.*dash-to-dock.*\.zip" | cut -d '"' -f 4 | head -n 1)
+    if [ -n "${DOCK_URL}" ]; then
+        curl -sL "${DOCK_URL}" -o "${TEMP_DIR}/dock.zip"
+        unzip -q "${TEMP_DIR}/dock.zip" -d "${DOCK_DIR}" || true
+        glib-compile-schemas "${DOCK_DIR}/schemas" 2>/dev/null || true
+    fi
+    rm -rf "${TEMP_DIR}"
+else
+    echo "  -> Dash to Dock já instalado."
+fi
 
-echo "  -> Sincronizando repositório ricezisto em ${RICE_REPO}..."
-rm -rf "${RICE_REPO}"
-cp -a "${REPO_DIR}" "${RICE_REPO}"
-chown -R rice:rice "${RICE_HOME}"
+# 7. Instalar Vicinae Launcher & Systemd User Service
+echo ""
+echo "[7/8] Instalando Vicinae Launcher..."
+if ! command -v vicinae >/dev/null 2>&1; then
+    TEMP_DIR=$(mktemp -d)
+    echo "  -> Baixando Vicinae Release do GitHub..."
+    VICINAE_URL=$(curl -sL https://api.github.com/repos/vicinaehq/vicinae/releases/latest | grep "browser_download_url.*linux-x86_64.*\.tar\.gz" | cut -d '"' -f 4 | head -n 1)
+    if [ -n "${VICINAE_URL}" ]; then
+        curl -sL "${VICINAE_URL}" -o "${TEMP_DIR}/vicinae.tar.gz"
+        mkdir -p /usr/local/lib/vicinae
+        tar -xzf "${TEMP_DIR}/vicinae.tar.gz" -C /usr/local/lib/vicinae/ --strip-components=1
+        ln -sf /usr/local/lib/vicinae/bin/vicinae /usr/local/bin/vicinae
+        if [ -d "/usr/local/lib/vicinae/share/applications" ]; then
+            cp -ru /usr/local/lib/vicinae/share/applications/* /usr/share/applications/ 2>/dev/null || true
+        fi
+        if [ -d "/usr/local/lib/vicinae/share/icons" ]; then
+            cp -ru /usr/local/lib/vicinae/share/icons/* /usr/share/icons/ 2>/dev/null || true
+        fi
+        echo "  -> Binário Vicinae instalado em /usr/local/bin/vicinae"
+    fi
+    rm -rf "${TEMP_DIR}"
+else
+    echo "  -> Vicinae já instalado ($(command -v vicinae))."
+fi
+
+# Garantir unidade de serviço do Vicinae
+mkdir -p /usr/local/lib/systemd/user
+cat << 'EOF' > /usr/local/lib/systemd/user/vicinae.service
+[Unit]
+Description=Vicinae Launcher Daemon
+Documentation=https://docs.vicinae.com
+After=graphical-session.target
+Requires=dbus.socket
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/vicinae server --replace
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=60
+KillMode=process
+
+[Install]
+WantedBy=graphical-session.target
+EOF
+
+# 8. Modo Sandbox Opcional (se fornecido --with-sandbox)
+echo ""
+echo "[8/8] Finalizando provisionamento de dependências..."
+if [ "${1:-}" = "--with-sandbox" ]; then
+    echo "  -> Provisionando usuário sandbox 'rice'..."
+    if ! id "rice" >/dev/null 2>&1; then
+        useradd -m -s /bin/zsh -G sudo,video,render rice
+        echo "rice:rice123" | chpasswd
+        echo "  -> Usuário 'rice' criado com senha: rice123"
+    fi
+    RICE_HOME="/home/rice"
+    RICE_REPO="${RICE_HOME}/ricezisto"
+    rm -rf "${RICE_REPO}"
+    cp -a "${REPO_DIR}" "${RICE_REPO}"
+    chown -R rice:rice "${RICE_HOME}"
+    echo "  -> Repositório clonado e ajustado em ${RICE_REPO}"
+fi
 
 echo ""
 echo "=============================================================================="
-echo "          PROVISIONAMENTO DO SISTEMA CONCLUÍDO COM SUCESSO! 🎉                "
-echo "=============================================================================="
-echo "Próximos passos:"
-echo "  1. Para rodar o setup na conta rice imediatamente via terminal:"
-echo "       sudo -u rice bash -c 'cd /home/rice/ricezisto && ./setup.sh'"
-echo "  2. Para testar o ambiente visual completo:"
-echo "       Faça 'Trocar Usuário' no Zorin OS e entre na conta 'rice' (senha: rice123)"
+echo "          DEPENDÊNCIAS DO SISTEMA INSTALADAS COM SUCESSO! 🎉                  "
 echo "=============================================================================="

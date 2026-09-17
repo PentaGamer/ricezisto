@@ -2,3 +2,13 @@
 .rice_backup/
 *.log
 *.tmp
+*.bak
+*.swp
+*.swo
+
+# AI / IDE / OS metadata
+.DS_Store
+.gemini/
+.agents/
+.vscode/
+.idea/

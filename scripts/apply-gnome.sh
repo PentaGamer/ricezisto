@@ -11,12 +11,6 @@ if [ ! -f "${WALLPAPER_FILE}" ]; then
     WALLPAPER_FILE="${REPO_DIR}/wallpapers/catppuccin-clearnight.jpg"
 fi
 
-# Trava de segurança: impede execução no usuário principal 'gustavo'
-if [ "${USER}" = "gustavo" ] && [ "${1:-}" != "--force-apply-to-gustavo" ]; then
-    echo "🛑 TRAVA DE SEGURANÇA: Não execute apply-gnome.sh diretamente no usuário 'gustavo'!"
-    echo "   Para aplicar no usuário de teste, faça login como 'rice' e execute de lá."
-    exit 1
-fi
 
 echo "==> [Ricezisto GNOME] Aplicando configurações do ambiente gráfico..."
 
