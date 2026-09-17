@@ -122,8 +122,7 @@ ricezisto/
 │   ├── backup.sh               # Rotina de backup snapshot preventivo
 │   ├── restore.sh              # Ferramenta de restauração de backups
 │   └── check-status.sh         # Diagnóstico completo de integridade
-├── wallpapers/                 # Wallpapers oficiais Catppuccin Mocha
-└── docs/                       # Especificações e Registros de Decisões Arquiteturais (ADRs)
+└── wallpapers/                 # Wallpapers oficiais Catppuccin Mocha
 ```
 
 ---

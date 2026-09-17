@@ -6,9 +6,13 @@
 *.swp
 *.swo
 
-# AI / IDE / OS metadata
+# AI / IDE / OS metadata & Agent Internal Docs
 .DS_Store
 .gemini/
 .agents/
 .vscode/
 .idea/
+.scratch/
+AGENTS.md
+CONTEXT.md
+docs/
