@@ -41,6 +41,11 @@ gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Catppuccin-Mocha-Standard-Mauve-Dark' 2>/dev/null || \
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
+# Tema do GNOME Shell (User Themes)
+if [ -d "/usr/share/themes/catppuccin-mocha-mauve-standard+default/gnome-shell" ] || [ -d "${HOME}/.themes/catppuccin-mocha-mauve-standard+default/gnome-shell" ] || [ -d "${HOME}/.local/share/themes/catppuccin-mocha-mauve-standard+default/gnome-shell" ]; then
+    gsettings set org.gnome.shell.extensions.user-theme name 'catppuccin-mocha-mauve-standard+default'
+fi
+
 # 3. Ícones e Cursores
 if [ -d "/usr/share/icons/Papirus-Dark" ] || [ -d "${HOME}/.local/share/icons/Papirus-Dark" ]; then
     gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
@@ -105,7 +110,12 @@ dconf write /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size 40
 dconf write /org/gnome/shell/extensions/dash-to-dock/click-action "'focus-minimize-or-previews'"
 dconf write /org/gnome/shell/extensions/dash-to-dock/custom-theme-shrink true
 dconf write /org/gnome/shell/extensions/dash-to-dock/transparency-mode "'FIXED'"
+dconf write /org/gnome/shell/extensions/dash-to-dock/custom-background-color true
+dconf write /org/gnome/shell/extensions/dash-to-dock/background-color "'#1e1e2e'"
 dconf write /org/gnome/shell/extensions/dash-to-dock/background-opacity 0.82
+dconf write /org/gnome/shell/extensions/dash-to-dock/custom-theme-customize-running-dots true
+dconf write /org/gnome/shell/extensions/dash-to-dock/custom-theme-running-dots-color "'#cba6f7'"
+dconf write /org/gnome/shell/extensions/dash-to-dock/custom-theme-running-dots-border-color "'#cba6f7'"
 dconf write /org/gnome/shell/extensions/dash-to-dock/show-show-apps-button true
 dconf write /org/gnome/shell/extensions/dash-to-dock/show-mounts true
 dconf write /org/gnome/shell/extensions/dash-to-dock/show-trash false

@@ -91,12 +91,18 @@ if command -v dconf >/dev/null 2>&1; then
     ICON_SIZE=$(dconf read /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size 2>/dev/null || echo "não configurado")
     CLICK_ACTION=$(dconf read /org/gnome/shell/extensions/dash-to-dock/click-action 2>/dev/null || echo "não configurado")
     
+    CUSTOM_BG=$(dconf read /org/gnome/shell/extensions/dash-to-dock/custom-background-color 2>/dev/null || echo "não configurado")
+    BG_COLOR=$(dconf read /org/gnome/shell/extensions/dash-to-dock/background-color 2>/dev/null || echo "não configurado")
+    BG_OPACITY=$(dconf read /org/gnome/shell/extensions/dash-to-dock/background-opacity 2>/dev/null || echo "não configurado")
+    DOTS_COLOR=$(dconf read /org/gnome/shell/extensions/dash-to-dock/custom-theme-running-dots-color 2>/dev/null || echo "não configurado")
+    
     echo "  -> Monitor Preferencial: ${MONITOR}"
     echo "  -> Posição da Dock:      ${POS}"
     echo "  -> Dock Fixa:            ${FIXED}"
     echo "  -> Autohide:             ${AUTOHIDE}"
     echo "  -> Intellihide:          ${INTELLIHIDE}"
     echo "  -> Tamanho dos Ícones:   ${ICON_SIZE}px"
+    echo "  -> Cor de Fundo:         ${BG_COLOR} (custom: ${CUSTOM_BG}, opacidade: ${BG_OPACITY})"
     echo "  -> Ação de Clique:       ${CLICK_ACTION}"
     
     if [ "${MONITOR}" = "'primary'" ] || [ "${MONITOR}" = "'DP-1'" ]; then
@@ -115,6 +121,16 @@ if command -v dconf >/dev/null 2>&1; then
         pass "Escala de ícones: 40px"
     fi
 
+    if [ "${CUSTOM_BG}" = "true" ] && [ "${BG_COLOR}" = "'#1e1e2e'" ]; then
+        pass "Fundo da Dock: Blindado em Catppuccin Mocha (#1e1e2e)"
+    else
+        warn "Fundo da Dock: Não blindado (custom: ${CUSTOM_BG}, cor: ${BG_COLOR})"
+    fi
+
+    if [ "${DOTS_COLOR}" = "'#cba6f7'" ]; then
+        pass "Indicadores de execução: Mauve (#cba6f7)"
+    fi
+
     FAVORITES=$(gsettings get org.gnome.shell favorite-apps 2>/dev/null || echo "")
     if echo "${FAVORITES}" | grep -q "kitty" && echo "${FAVORITES}" | grep -q "brave" && echo "${FAVORITES}" | grep -q "spotify"; then
         pass "Favoritos da Dock: Kitty, Brave, Nautilus e Spotify configurados"
@@ -129,6 +145,14 @@ GTK_TH=$(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null || echo
 echo "  -> Tema GTK:      ${GTK_TH}"
 IC_TH=$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null || echo "desconhecido")
 echo "  -> Tema de Ícones: ${IC_TH}"
+SHELL_TH=$(gsettings get org.gnome.shell.extensions.user-theme name 2>/dev/null || echo "desconhecido")
+echo "  -> Tema Shell:     ${SHELL_TH}"
+
+if [ "${SHELL_TH}" = "'catppuccin-mocha-mauve-standard+default'" ]; then
+    pass "Tema GNOME Shell: Catppuccin Mocha Mauve ativo"
+else
+    warn "Tema GNOME Shell: Não é Catppuccin Mocha (${SHELL_TH})"
+fi
 
 echo ""
 echo "5. Fontes:"

@@ -22,6 +22,13 @@ Personalização da Dash to Dock no GNOME 46 Wayland:
 - `show-show-apps-button: true`
 - `running-indicator-style: 'DOTS'`
 - `require-pressure-to-show: false`
+- `custom-background-color: true`
+- `background-color: '#1e1e2e'`
+- `background-opacity: 0.82`
+- `custom-theme-customize-running-dots: true`
+- `custom-theme-running-dots-color: '#cba6f7'`
+- `custom-theme-running-dots-border-color: '#cba6f7'`
+- `gnome-shell user-theme`: `'catppuccin-mocha-mauve-standard+default'`
 - `favorite-apps`: `['kitty.desktop', 'brave-browser.desktop', 'org.gnome.Nautilus.desktop', 'com.spotify.Client.desktop']`
 
 ## Plan of Tasks (Issues)

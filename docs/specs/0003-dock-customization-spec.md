@@ -37,6 +37,10 @@ Reconfigurar a extensão **Dash to Dock** (`dash-to-dock@micxgx.gmail.com`) no G
    - Lixeira oculta da dock (`show-trash: false`).
 6. **Lista Canônica de Favoritos Fixados**:
    - `['kitty.desktop', 'brave-browser.desktop', 'org.gnome.Nautilus.desktop', 'com.spotify.Client.desktop']`.
+7. **Blindagem de Cores e Tema do Shell (Catppuccin Mocha Mauve)**:
+   - `custom-background-color: true`, `background-color: '#1e1e2e'`, `background-opacity: 0.82`.
+   - `custom-theme-customize-running-dots: true`, `custom-theme-running-dots-color: '#cba6f7'`, `custom-theme-running-dots-border-color: '#cba6f7'`.
+   - Vínculo explícito do tema do GNOME Shell via `user-theme` (`catppuccin-mocha-mauve-standard+default`), prevenindo herança do tema claro do sistema (`ZorinBlue-Light`) e evitando que a dock assuma a cor branca sólida/leitosa (`#ffffff`) após o boot ou logout.
 
 ---
 
