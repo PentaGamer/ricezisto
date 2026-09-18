@@ -55,6 +55,11 @@ cd ~/.config/ricezisto
 ./install.sh
 ```
 
+> **Nota sobre permissões**: O `./install.sh` requer privilégios de administrador (`sudo`) para instalar os pacotes de sistema, fontes e extensões globais. Se a sua conta não possui permissões no `sudoers` ou se outro administrador já instalou as dependências globais na máquina, você pode aplicar apenas os dotfiles e temas do GNOME na sua conta com:
+> ```bash
+> ./install.sh --user-only
+> ```
+
 ### O que o instalador unificado (`./install.sh`) faz automaticamente:
 1. **Provisiona Dependências de Sistema (`sudo`)**:
    - Atualiza listas do APT e instala ferramentas essenciais (`kitty`, `zsh`, `stow`, `cava`, `eza`, `bat`, `fzf`, `zoxide`, `fonts-inter`, `papirus-icon-theme`, `wl-clipboard`, etc.).
