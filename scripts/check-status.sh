@@ -216,6 +216,11 @@ else
     warn "Clipboard Vicinae: Atalho customizado ausente"
 fi
 
+if echo "${CUSTOM_BINDS}" | grep -q "custom4"; then
+    KITTY_ALT_BIND=$(gsettings get org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/ binding 2>/dev/null || echo "")
+    pass "Terminal Kitty Alt (${KITTY_ALT_BIND}): Ativo em custom4"
+fi
+
 echo ""
 echo "7. Suite CLI Moderna (eza, bat, fzf, zoxide):"
 for cli_tool in eza bat fzf zoxide cava; do

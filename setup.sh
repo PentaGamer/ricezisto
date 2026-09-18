@@ -115,8 +115,28 @@ if command -v systemctl >/dev/null 2>&1 && [ -f "/usr/local/lib/systemd/user/vic
     echo "  -> Serviço vicinae.service ativo no systemd de usuário"
 fi
 
+
+# Integração de Fallback no ~/.bashrc
+BASHRC_FILE="${HOME}/.bashrc"
+if [ -f "${BASHRC_FILE}" ] && ! grep -q "RICEZISTO CLI INTEGRATION" "${BASHRC_FILE}"; then
+    cat << 'EOF' >> "${BASHRC_FILE}"
+
+# --- RICEZISTO CLI INTEGRATION (Starship + Fastfetch) ---
+if [[ $- == *i* ]]; then
+    if command -v starship >/dev/null 2>&1; then
+        eval "$(starship init bash)"
+    fi
+    if command -v fastfetch >/dev/null 2>&1; then
+        fastfetch
+    fi
+fi
+EOF
+    echo "  -> Integração CLI (Starship + Fastfetch) adicionada em ~/.bashrc"
+fi
+
 # Atualizar cache de fontes
 fc-cache -f 2>/dev/null || true
+
 
 # Passo 4: Configurar GNOME Shell e Extensões
 echo ""

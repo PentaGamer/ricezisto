@@ -51,6 +51,19 @@ if [ -f "/usr/bin/batcat" ] && [ ! -f "/usr/local/bin/bat" ]; then
     ln -sf /usr/bin/batcat /usr/local/bin/bat
 fi
 
+# Definir Kitty como terminal padrão do sistema (x-terminal-emulator)
+if command -v kitty >/dev/null 2>&1; then
+    update-alternatives --set x-terminal-emulator /usr/bin/kitty 2>/dev/null || true
+fi
+
+# Configurar Zsh como shell padrão do usuário que invocou o script
+TARGET_USER="${SUDO_USER:-${USER}}"
+if [ "${TARGET_USER}" != "root" ] && command -v zsh >/dev/null 2>&1; then
+    ZSH_PATH="$(which zsh)"
+    usermod -s "${ZSH_PATH}" "${TARGET_USER}" 2>/dev/null || chsh -s "${ZSH_PATH}" "${TARGET_USER}" 2>/dev/null || true
+    echo "  -> Shell padrão do usuário '${TARGET_USER}' configurada para: ${ZSH_PATH}"
+fi
+
 # 2. Instalar Starship Prompt
 echo ""
 echo "[2/8] Instalando Starship Prompt..."

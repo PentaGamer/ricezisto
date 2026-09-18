@@ -113,6 +113,6 @@ alias gp='git push'
 alias gl='git pull'
 
 # Fastfetch on interactive terminal launch
-if [[ -o interactive ]] && command -v fastfetch >/dev/null 2>&1; then
+if [[ -o interactive || $- == *i* ]] && command -v fastfetch >/dev/null 2>&1; then
     fastfetch
 fi
