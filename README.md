@@ -50,7 +50,7 @@ Baseado na paleta de cores oficial **Catppuccin Mocha** com acento **Mauve** (`#
 Abra o terminal em qualquer pasta e execute:
 
 ```bash
-git clone https://github.com/<SEU_USUARIO>/ricezisto.git ~/.config/ricezisto
+git clone https://github.com/PentaGamer/ricezisto.git ~/.config/ricezisto
 cd ~/.config/ricezisto
 ./install.sh
 ```
